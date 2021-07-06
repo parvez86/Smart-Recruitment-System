@@ -1,0 +1,188 @@
+{% extends "mysite/base.html" %}
+{% load static %}
+
+{% block body %}
+    <!-- HOME -->
+    <section class="section-hero overlay inner-page bg-image"
+             style="background-image: url({% static 'mysite/images/hero_1.jpg' %});" id="home-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7">
+                    <h1 class="text-white font-weight-bold">Post A Job</h1>
+                    <div class="custom-breadcrumbs">
+                        <a href="#">Home</a> <span class="mx-2 slash">/</span>
+                        <a href="#">Job</a> <span class="mx-2 slash">/</span>
+                        <span class="text-white"><strong>Post a Job</strong></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="site-section">
+        <div class="container">
+
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-8 mb-4 mb-lg-0">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <h2>Post A Job</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="job-single.html" class="btn btn-block btn-light btn-md"><span
+                                    class="icon-open_in_new mr-2"></span>Preview</a>
+                        </div>
+                        <div class="col-6">
+                            <a href="job-single.html" class="btn btn-block btn-primary btn-md">Save Job</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col-lg-12">
+                    <form class="p-4 p-md-5 border rounded" action="post-job.html" method="post">
+                        {% csrf_token %}
+                        <h3 class="text-black mb-5 border-bottom pb-2">Job Details</h3>
+
+                        {#              <div class="form-group">#}
+                        {#                <label for="company-website-tw d-block">Upload Featured Image</label> <br>#}
+                        {#                <label class="btn btn-primary btn-md btn-file">#}
+                        {#                  Browse File<input type="file" hidden>#}
+                        {#                </label>#}
+                        {#              </div>#}
+
+                        <div class="form-group">
+                            <label for="job-title">Job Title</label>
+                            <input type="text" class="form-control" id="job-title" name="title"
+                                   placeholder="Product Designer">
+                        </div>
+                        {#                        <div class="form-group">#}
+                        {#                            <label for="email">Email</label>#}
+                        {#                            <input type="text" class="form-control" id="email" placeholder="you@yourdomain.com">#}
+                        {#                        </div>#}
+                        <div class="form-group">
+                            <label for="company_name">Company Name</label>
+                            <input type="text" class="form-control" id="company_name" name="company_name"
+                                   placeholder="Google">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="employment_status">Job Type</label>
+                            <select class="selectpicker border rounded" id="employment_status" name="employment_status"
+                                    data-style="btn-black"
+                                    data-width="100%" data-live-search="true" title="Select Job Type">
+                                <option>Part Time</option>
+                                <option>Full Time</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="vacancy">Vacancy</label>
+                            <input type="text" class="form-control" id="vacancy" name="vacancy" placeholder="20">
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select class="selectpicker border rounded" id="gender" name="gender" data-style="btn-black"
+                                    data-width="100%" data-live-search="true" title="Select Gender">
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>Both</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="text-black" for="details">Job Description</label>
+                            <div class="editor" id="editor-1">
+                                <input type="text" class="form-control" id="details" name="details"
+                                       placeholder="Write Job description...">
+                            </div>
+
+                            {#                            <div class="editor" id="editor-2">#}
+                            {#                                <p>Write Job responsibilities!</p>#}
+                            {#                            </div>#}
+                        </div>
+                        <div class="form-group">
+                            <label for="responsibilities">Job Responsibilities</label>
+                            <div class="editor" id="editor-2">
+                                <input type="text" class="form-control" id="responsibilities"
+                                       name="responsibilities" placeholder="Write Job responsibilities..."></div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="experience">Experience</label>
+                            <input type="text" class="form-control" id="experience" name="experience"
+                                   placeholder="1-2 Years">
+                        </div>
+                        <div class="form-group">
+                            <label for="other_benefits">Other Benefits</label>
+                            <textarea class="form-control" id="other_benefits" name="other_benefits" rows="3" placeholder="Write Some Benefits..."></textarea>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="job-location">Job Location</label>
+                            <input type="text" class="form-control" id="job-location" name="job_location"
+                                   placeholder="Dhaka, Bangladesh">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="salary">Salary</label>
+                            <input type="text" class="form-control" id="salary" name="salary" placeholder="40k-60k">
+                        </div>
+
+                        {#                        <div class="form-group">#}
+                        {#                            <label for="image">upload Image</label>#}
+                        {#                            <label class="icon-image">#}
+                        {#                                Upload Image <input type="image" id="image" name="image" hidden>#}
+                        {#                            </label>#}
+                        {#                        </div>#}
+                        <div class="form-group">
+                            <label for="application_deadline">Application Deadline</label>
+                            <input type="date" data-date-format="YYYY MMMM DD"  value="" min="1997-01-01" max="2030-12-31" class="form-control" id="application_deadline"
+                                   name="application_deadline" placeholder="YYYY-MMM-DD">
+                        </div>
+
+                         <div class="row form-group">
+                            <div class="col-md-12">
+                                <input type="submit" value="Post" class="btn btn-primary btn-md text-white">
+                            </div>
+                        </div>
+
+
+                        {#                        <div class="form-group">#}
+                        {#                            <label for="company-website-tw d-block">Upload Logo</label> <br>#}
+                        {#                            <label class="btn btn-primary btn-md btn-file">#}
+                        {#                                Browse File<input type="file" hidden>#}
+                        {#                            </label>#}
+                        {#                        </div>#}
+
+                    </form>
+                </div>
+
+
+            </div>
+            <div class="row align-items-center mb-5">
+
+                <div class="col-lg-4 ml-auto">
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="#" class="btn btn-block btn-light btn-md"><span
+                                    class="icon-open_in_new mr-2"></span>Preview</a>
+                        </div>
+                        <div class="col-6">
+                            <a href="#" class="btn btn-block btn-primary btn-md">Save Job</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+{% endblock body %}
