@@ -22,7 +22,7 @@
         <div class="container">
             <div class="row align-items-center mb-5">
                 <h4>Apply for the job</h4>
-                <form  method="post">
+                <form  method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-6">
@@ -53,6 +53,7 @@
                                            aria-describedby="inputGroupFileAddon03">
                                     <label class="custom-file-label" for="inputGroupFile03">Upload CV</label>
                                 </div>
+                            </div>
                             </div>
                         </div>
                         <div class="col-md-12">

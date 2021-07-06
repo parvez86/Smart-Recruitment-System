@@ -71,7 +71,7 @@ class Apply_job(models.Model):
     name = models.CharField(max_length=50)
     email = models.EmailField(max_length=50)
     portfolio = models.CharField(max_length=50)
-    cv = models.FileField(upload_to='Upload Resumes', null=True)
+    cv = models.FileField(null=True)
     coverletter = models.CharField(max_length=100)
 
     def __str__(self):

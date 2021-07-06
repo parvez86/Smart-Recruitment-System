@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-
+from django.contrib.auth.models import User, auth
+from django.core.files.storage import FileSystemStorage
 
 from mysite import models
 from mysite.models import Contact
 from mysite.models import PostJob
 from mysite.models import Apply_job
-from django.contrib.auth.models import User, auth
+
 from django.contrib.auth.decorators import login_required
 
 
@@ -153,13 +154,18 @@ def applyjob(request):
         name = request.POST['name']
         email = request.POST['email']
         portfolio = request.POST['portfolio']
-        cv = request.POST['cv']
+        cv = request.FILES['cv']
         coverletter = request.POST['coverletter']
+
+        # fs = FileSystemStorage
+        # fs.save(cv.name, cv)
 
         ins = Apply_job(name=name, email=email, portfolio=portfolio, cv=cv, coverletter=coverletter)
         ins.save()
         print("The Data is saved into database!")
     return render(request, "mysite/applyjob.html")
+
+
 
 # def fileUpload(request):
 #     if request.method == 'POST':
