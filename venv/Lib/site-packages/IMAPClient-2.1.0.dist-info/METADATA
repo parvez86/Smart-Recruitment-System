@@ -1,0 +1,50 @@
+Metadata-Version: 2.1
+Name: IMAPClient
+Version: 2.1.0
+Summary: Easy-to-use, Pythonic and complete IMAP client library
+Home-page: https://github.com/mjs/imapclient/
+Author: Menno Finlay-Smits
+Author-email: inbox@menno.io
+Maintainer: IMAPClient Maintainers
+Maintainer-email: imapclient@groups.io
+License: http://en.wikipedia.org/wiki/BSD_licenses
+Download-URL: http://menno.io/projects/IMAPClient/IMAPClient-2.1.0.zip
+Keywords: imap client email mail
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Communications :: Email :: Post-Office :: IMAP
+Classifier: Topic :: Internet
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Networking
+Provides-Extra: doc
+Provides-Extra: test
+Requires-Dist: six
+Provides-Extra: doc
+Requires-Dist: sphinx; extra == 'doc'
+Provides-Extra: test
+Provides-Extra: test
+Requires-Dist: mock (>=1.3.0); (python_version < "3.4") and extra == 'test'
+
+IMAPClient is an easy-to-use, Pythonic and complete IMAP client library.
+
+Features:
+    * Arguments and return values are natural Python types.
+    * IMAP server responses are fully parsed and readily usable.
+    * IMAP unique message IDs (UIDs) are handled transparently.
+    * Internationalised mailbox names are transparently handled.
+    * Time zones are correctly handled.
+    * Convenience methods are provided for commonly used functionality.
+    * Exceptions are raised when errors occur.
+
+Python versions 2.7 and 3.4 through 3.7 are officially supported.
+
+IMAPClient includes comprehensive units tests and automated
+functional tests that can be run against a live IMAP server.
+
+

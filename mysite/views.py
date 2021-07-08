@@ -7,7 +7,8 @@ from mysite import models
 from mysite.models import Contact
 from mysite.models import PostJob
 from mysite.models import Apply_job
-
+import mysite.screen as screen
+import re
 from django.contrib.auth.decorators import login_required
 
 
@@ -117,6 +118,10 @@ def post_job(request):
         ins = PostJob(title=title, company_name=company_name, employment_status=employment_status, vacancy=vacancy, gender=gender, details=details,
                       responsibilities=responsibilities, experience=experience, other_benefits=other_benefits, job_location=job_location, salary=salary, application_deadline=application_deadline)
         ins.save()
+        jobfilepath = 'jobDetails/'
+        job_desc = details + '\n' + responsibilities + '\n' + experience + '\n';
+        with open(jobfilepath + company_name+'_'+title + '.txt', 'w+') as file:
+            file.write(re.sub(' +', ' ', job_desc))
         print("The data has been added into database!")
     return render(request, 'mysite/post-job.html')
 
@@ -166,7 +171,8 @@ def applyjob(request):
     return render(request, "mysite/applyjob.html")
 
 
+def ranking(request):
+    jodfilename = 'Reve Systems Ltd._Web Developer.txt'
+    result_arr = screen.res(jodfilename)
+    return render(request, 'mysite/ranking.html', {'items': result_arr})
 
-# def fileUpload(request):
-#     if request.method == 'POST':
-#         uploaded_file = request.FILES['document']

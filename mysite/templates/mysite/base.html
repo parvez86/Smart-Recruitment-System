@@ -23,6 +23,8 @@
 
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="{% static 'mysite/css/style.css' %}">
+    {% block  link_section%}
+    {% endblock %}
 </head>
 
 
@@ -82,7 +84,7 @@
 
                         {% else %}
                             <li><a href="{% url 'register' %}">Sign Up</a></li>
-                            <li><a href="{% url 'login' %}">Log In</a></li>
+{#                            <li><a href="{% url 'login' %}">Log In</a></li>#}
 
                         {% endif %}
 {#                        <li class="d-lg-none"><a href="post-job.html"><span class="mr-2">+</span> Post a Job</a></li>#}
@@ -90,12 +92,16 @@
                     </ul>
                 </nav>
 
+
                 <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
                     <div class="ml-auto">
+                        {% if user.is_authenticated %}
                         <a href="{% url 'post-job' %}" class="btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span
                                 class="mr-2 icon-add"></span>Post a Job</a>
+                            {% else %}
                         <a href="{% url 'login' %}" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span
                                 class="mr-2 icon-lock_outline"></span>Log In</a>
+                        {% endif %}
                     </div>
                     <a href="#" class="site-menu-toggle js-menu-toggle d-inline-block d-xl-none mt-lg-2 ml-3"><span
                             class="icon-menu h3 m-0 p-0 mt-2"></span></a>
@@ -189,7 +195,8 @@
 <script src="{% static 'mysite/js/jquery.animateNumber.min.js' %}"></script>
 <script src="{% static 'mysite/js/owl.carousel.min.js' %}"></script>
 <!-- <script src="{% static 'mysite/js/quill.min.js' %}"></script>-->
-
+{% block script_section %}
+{% endblock %}
 
 <script src="{% static 'mysite/js/bootstrap-select.min.js' %}"></script>
 

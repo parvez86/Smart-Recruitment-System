@@ -1,47 +1,140 @@
+{#{% extends "mysite/base.html" %}#}
+{#{% load static %}#}
+{##}
+{#{% block body %}#}
+{##}
+{#    <section class="section-hero overlay inner-page bg-image"#}
+{#             style="background-image: url({% static 'mysite/images/hero_1.jpg' %});" id="home-section">#}
+{#        <div class="container">#}
+{#            <div class="row">#}
+{#                <div class="col-md-7">#}
+{#                    <h1 class="text-white font-weight-bold">Apply for the Job</h1>#}
+{#                    <div class="custom-breadcrumbs">#}
+{#                        <a href="/">Home</a> <span class="mx-2 slash">/</span>#}
+{#                        <span class="text-white"><strong>Apply the job</strong></span>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </section>#}
+{#    #}
+{#    <section class="site-section">#}
+{#        <div class="container">#}
+{#            <div class="row align-items-center mb-5">#}
+{#            <div class="row col-lg-6 mb-5 mb-lg-0">#}
+{#                <h4>Apply for the job</h4>#}
+{#                <form  method="post" enctype="multipart/form-data">#}
+{#                    {% csrf_token %}#}
+{#                    <div class="row">#}
+{#                        <div class="col-md-6">#}
+{#                            <div class="input_field">#}
+{#                                 <label class="text-black" for="name">Name</label>#}
+{#                                <input type="text" id="name" name="name" placeholder="Your name">#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <br>#}
+{#                        <div class="col-md-6">#}
+{#                            <div class="input_field">#}
+{#                                 <label class="text-black" for="name">Email</label>#}
+{#                                <input type="email" id="email" name="email" placeholder="Email">#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <br>#}
+{#                        <div class="col-md-12">#}
+{#                            <div class="input_field">#}
+{#                                 <label class="text-black" for="name">Portfolio Link</label>#}
+{#                                <input type="text" id="portfolio" name="portfolio" placeholder="Website/Portfolio link">#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <br>#}
+{#                        <div class="col-md-12">#}
+{#                            <div class="input-group">#}
+{#                                <div class="input-group-prepend">#}
+{#                                    <button type="button" id="inputGroupFileAddon03"><i class="fa fa-cloud-upload"#}
+{#                                                                                        aria-hidden="true"></i>#}
+{#                                    </button>#}
+{#                                </div>#}
+{#                                <div class="custom-file">#}
+{#                                    <input type="file" class="custom-file-input" id="inputGroupFile03" name="cv"#}
+{#                                           aria-describedby="inputGroupFileAddon03">#}
+{#                                    <label class="custom-file-label" for="inputGroupFile03">Upload CV</label>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <br>#}
+{#                        <div class="col-md-12">#}
+{#                            <div class="input_field">#}
+{#                                <textarea name="coverletter" id="coverletter" cols="30" rows="10"#}
+{#                                          placeholder="Cover letter"></textarea>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="col-md-12">#}
+{#                            <div class="submit_btn">#}
+{#                                <button class="boxed-btn3 w-100" type="submit">Apply Now</button>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </form>#}
+{#            </div>#}
+{#        </div>#}
+{#    </section>#}
+{##}
+{#{% endblock body %}#}
 {% extends "mysite/base.html" %}
 {% load static %}
 
 {% block body %}
-
+    <!-- HOME -->
     <section class="section-hero overlay inner-page bg-image"
              style="background-image: url({% static 'mysite/images/hero_1.jpg' %});" id="home-section">
         <div class="container">
             <div class="row">
                 <div class="col-md-7">
-                    <h1 class="text-white font-weight-bold">Apply for the Job</h1>
+                    <h1 class="text-white font-weight-bold">Apply for Job</h1>
                     <div class="custom-breadcrumbs">
-                        <a href="/">Home</a> <span class="mx-2 slash">/</span>
-                        <span class="text-white"><strong>Apply the job</strong></span>
+                        <a href="#">Home</a> <span class="mx-2 slash">/</span>
+                        <span class="text-white"><strong>Apply for job</strong></span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="site-section">
+    <section class="site-section" id="next-section">
         <div class="container">
-            <div class="row align-items-center mb-5">
-                <h4>Apply for the job</h4>
-                <form  method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="input_field">
-                                <input type="text" id="name" name="name" placeholder="Your name">
+            <div class="row">
+
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <h3 class="text font-weight ">Apply for the Job</h3>
+                    <br>
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <label class="text-black" for="name">Full Name</label>
+                                <input type="text" id="name" name="name" class="form-control">
                             </div>
                         </div>
-                        <br>
-                        <div class="col-md-6">
-                            <div class="input_field">
-                                <input type="email" id="email" name="email" placeholder="Email">
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <label class="text-black" for="email">Email</label>
+                                <input type="email" id="email" name="email" class="form-control">
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="input_field">
-                                <input type="text" id="portfolio" name="portfolio" placeholder="Website/Portfolio link">
+
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <label class="text-black" for="description">Coverletter</label>
+                                <textarea name="coverletter" id="coverletter" cols="30" rows="7" class="form-control"
+                                          placeholder="Write your notes or questions here..."></textarea>
                             </div>
                         </div>
-                        <div class="col-md-12">
+
+                        <div class="row form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <button type="button" id="inputGroupFileAddon03"><i class="fa fa-cloud-upload"
@@ -49,28 +142,28 @@
                                     </button>
                                 </div>
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="inputGroupFile03" name="cv"
+                                    <input type="file" class="custom-file-input" id="inputGroupFile03"
                                            aria-describedby="inputGroupFileAddon03">
                                     <label class="custom-file-label" for="inputGroupFile03">Upload CV</label>
                                 </div>
                             </div>
+                        </div>
+
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <input type="submit" value="Submit" class="btn btn-primary btn-md text-white">
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="input_field">
-                                <textarea name="coverletter" id="coverletter" cols="30" rows="10"
-                                          placeholder="Cover letter"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="submit_btn">
-                                <button class="boxed-btn3 w-100" type="submit">Apply Now</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+
+
+                    </form>
+                </div>
+
             </div>
         </div>
     </section>
+
+
 
 {% endblock body %}

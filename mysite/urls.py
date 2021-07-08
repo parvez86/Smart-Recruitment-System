@@ -20,5 +20,6 @@ urlpatterns = [
     path("post-job.html", views.post_job, name="post-job"),
     path("contact.html", views.contact, name="contact"),
     path("applyjob.html", views.applyjob, name="applyjob"),
+    path("ranking.html", views.ranking, name="ranking"),
 
 ]
