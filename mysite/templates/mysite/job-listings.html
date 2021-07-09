@@ -26,13 +26,12 @@
 
             <div class="row mb-5 justify-content-center">
                 <div class="col-md-7 text-center">
-                    <h2 class="section-title mb-2">53 Job Listed</h2>
+                    <h2 class="section-title mb-2">{{ job_len }} Job Listed</h2>
                 </div>
             </div>
 
 
 <!-- For Post a Job -->
-
             {% for job_listing in job_listings %}
             <ul class="job-listings mb-5">
                 <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
@@ -65,18 +64,19 @@
 
             <div class="row pagination-wrap">
                 <div class="col-md-6 text-center text-md-left mb-4 mb-md-0">
-                    <span>Showing 1-7 Of 53 Jobs</span>
+                    <span>Showing {{ curr_page1 }}-{{ curr_page2 }} Of {{ job_len }} Jobs</span>
                 </div>
                 <div class="col-md-6 text-center text-md-right">
                     <div class="custom-pagination ml-auto">
-                        <a href="#" class="prev">Prev</a>
+                        {% if query.has_previous %}
+                          <a  href="?page={{ query.previous_page_number }}" class="prev">Prev</a>
+                        {% endif %}
                         <div class="d-inline-block">
-                            <a href="#" class="active">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#">4</a>
+                            Page <a href="#" class="active">{{ query.number }}</a> of  {{ query.paginator.num_pages }}
                         </div>
-                        <a href="#" class="next">Next</a>
+                        {% if query.has_next %}
+                            <a href="?page={{ query.next_page_number }}" class="next">Next</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

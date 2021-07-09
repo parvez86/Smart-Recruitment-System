@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
 from django.core.files.storage import FileSystemStorage
-
 from mysite import models
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 from mysite.models import Contact
 from mysite.models import PostJob
 from mysite.models import Apply_job
@@ -12,9 +13,41 @@ import re
 from django.contrib.auth.decorators import login_required
 
 
-
+# write your code
 def index(request):
-    return render(request, "mysite/index.html")
+    job_list = PostJob.objects.all()
+    total_jobs = job_list.count()
+    total_users = User.objects.all().count()
+    total_companies = PostJob.objects.all().count()
+    query_num = 5
+    paginator = Paginator(job_list, query_num)
+    page = request.GET.get('page')
+    try:
+        qs = paginator.page(page)
+    except PageNotAnInteger:
+        qs = paginator.page(1)
+    except EmptyPage:
+        qs = paginator.page(paginator.num_pages)
+    if qs.has_previous():
+        page_show_min = (qs.previous_page_number()-1)*query_num + 1
+    elif total_jobs > 0:
+        page_show_min = 1
+    else:
+        page_show_min = 0
+    if qs.has_next():
+        page_show_max = (qs.previous_page_number()+1)*query_num - 1
+    else:
+        page_show_max = total_jobs
+    context = {
+        'query': qs,
+        'job_listings': job_list,
+        'job_len': total_jobs,
+        'curr_page1': page_show_min,
+        'curr_page2': page_show_max,
+        'companies': total_companies,
+        'candidates': total_users
+    }
+    return render(request, "mysite/index.html", context=context)
 
 
 def login(request):
@@ -78,6 +111,7 @@ def about(request):
     return render(request, 'mysite/about.html')
 
 
+@login_required(login_url='login')
 def job_single(request, id):
     job_query = PostJob.objects.get(id=id)
     context = {
@@ -87,12 +121,42 @@ def job_single(request, id):
 
 
 def job_listings(request):
-    all_jobs = PostJob.objects.all()
-    context = {'job_listings': all_jobs}
+    job_list = PostJob.objects.all()
+    total_jobs = job_list.count()
+    total_users = User.objects.all().count()
+    total_companies = PostJob.objects.all().count()
+    query_num = 7
+    paginator = Paginator(job_list, query_num)
+    page = request.GET.get('page')
+    try:
+        qs = paginator.page(page)
+    except PageNotAnInteger:
+        qs = paginator.page(1)
+    except EmptyPage:
+        qs = paginator.page(paginator.num_pages)
+    if qs.has_previous():
+        page_show_min = (qs.previous_page_number() - 1) * query_num + 1
+    elif total_jobs > 0:
+        page_show_min = 1
+    else:
+        page_show_min = 0
+    if qs.has_next():
+        page_show_max = (qs.previous_page_number() + 1) * query_num - 1
+    else:
+        page_show_max = total_jobs
+    context = {
+        'query': qs,
+        'job_listings': job_list,
+        'job_len': total_jobs,
+        'curr_page1': page_show_min,
+        'curr_page2': page_show_max,
+        'companies': total_companies,
+        'candidates': total_users
+    }
+    return render(request, "mysite/job-listings.html", context=context)
 
-    return render(request, "mysite/job-listings.html", context)
 
-
+@login_required(login_url='login')
 def post_job(request):
     if request.method == "POST":
         title = request.POST['title']
@@ -154,25 +218,40 @@ def contact(request):
     return render(request, "mysite/contact.html")
 
 
-def applyjob(request):
+@login_required(login_url='login')
+def applyjob(request, id):
+    job = PostJob.objects.get(id=id)
+    print(job.id)
     if request.method == "POST":
         name = request.POST['name']
         email = request.POST['email']
-        portfolio = request.POST['portfolio']
-        cv = request.FILES['cv']
+        print(name, email)
+        cv = request.FILES.get('cv')
+        # if 'cv' in request.POST:
+        #     cv = request.FILES['cv']
+        # else:
+        #     cv = False
         coverletter = request.POST['coverletter']
+        # job_id = request.
 
         # fs = FileSystemStorage
         # fs.save(cv.name, cv)
-
-        ins = Apply_job(name=name, email=email, portfolio=portfolio, cv=cv, coverletter=coverletter)
+        ins = Apply_job(name=name, email=email, cv=cv, coverletter=coverletter, company_name=job.company_name, title=job.title)
         ins.save()
         print("The Data is saved into database!")
-    return render(request, "mysite/applyjob.html")
+        #redirect('index')
+    return render(request, 'mysite/applyjob.html', {'company_name': job.company_name, 'title': job.title})
 
 
-def ranking(request):
-    jodfilename = 'Reve Systems Ltd._Web Developer.txt'
-    result_arr = screen.res(jodfilename)
-    return render(request, 'mysite/ranking.html', {'items': result_arr})
-
+@login_required
+def ranking(request, id):
+    job_query = PostJob.objects.get(id=id)
+    print(job_query.id, job_query.title, job_query.company_name)
+    jodfilename = job_query.company_name+'_'+job_query.title+'.txt'
+    jo_desc= job_query.details + '\n' + job_query.responsibilities + '\n' + job_query.experience + '\n';
+    resumes_name = Apply_job.objects.filter(company_name=job_query.company_name, title=job_query.title, cv__isnull=False)
+    resumes = [str(item.cv) for item in resumes_name]
+    resumes_new = [item.split(':')[0] for item in resumes]
+    resumes_new = [item for item in resumes_new if item != '']
+    result_arr = screen.res(jodfilename, jo_desc, resumes_new)
+    return render(request, 'mysite/ranking.html', {'items': result_arr, 'company_name': job_query.company_name, 'title': job_query.title})

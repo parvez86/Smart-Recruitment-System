@@ -1,3 +1,3 @@
-We need some fresh developer having good working knowledge  on web developing. The candidates must be hardworking, innovative, good-communication skills, and persist under pressure..
-     Very good knowledge of Java, JSP     Excellent capability to handle database, especially on MySql     Familiar with MVC pattern     Advanced knowledge of HTML/CSS/javascript     Great communication skill     Excellent capability to translate complex client requirements to technical implementation.
+We need some fresh developer having good working knowledge on web developing. The candidates must be hardworking, innovative, good-communication skills, and persist under pressure..
+ Very good knowledge of Java, JSP Excellent capability to handle database, especially on MySql Familiar with MVC pattern Advanced knowledge of HTML/CSS/javascript Great communication skill Excellent capability to translate complex client requirements to technical implementation.
 0-2 years

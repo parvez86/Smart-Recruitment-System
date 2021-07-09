@@ -42,11 +42,10 @@ def writeResultInJson(data, jobfile='job1'):
         f.close()
 
 
-def get_rank(result_dict=None, jobfileName='job1'):
-    if result_dict == None:
-        filepath = 'result/' + jobfileName + '.json'
-        result_dict = readResultInJson(filepath)
+def get_rank(result_dict=None):
 
+    if result_dict == None:
+        return {}
     # new_result_dict = sorted(result_dict.items(), key=lambda item: float(item[1]["score"]), reverse=False)
     new_result_dict = OrderedDict(sorted(result_dict.items(), key=lambda item: getitem(item[1], 'score'), reverse=False))
     new_updated_result_dict = {}
@@ -69,7 +68,7 @@ def show_rank(result_dict=None, jobfileName='job1', top_k=20):
 # start parse
 
 
-def res(jobfile):
+def res(jobfile, job_desc, list_of_resumes):
     Resume_Vector = []
     Ordered_list_Resume = []
     Ordered_list_Resume_Score = []
@@ -80,23 +79,27 @@ def res(jobfile):
     Resumes = []
     Temp_pdf = []
     filepath = 'media/'
-    for file in glob.glob(filepath + '**/*.pdf', recursive=True):
-        LIST_OF_FILES_PDF.append(file)
-    for file in glob.glob(filepath + '**/*.doc', recursive=True):
-        LIST_OF_FILES_DOC.append(file)
-    for file in glob.glob(filepath + '**/*.docx', recursive=True):
-        LIST_OF_FILES_DOCX.append(file)
-    LIST_OF_FILES = LIST_OF_FILES_DOC + LIST_OF_FILES_DOCX + LIST_OF_FILES_PDF
+    # for file in glob.glob(filepath + '**/*.pdf', recursive=True):
+    #     LIST_OF_FILES_PDF.append(file)
+    #     print(file)
+    # for file in glob.glob(filepath + '**/*.doc', recursive=True):
+    #     LIST_OF_FILES_DOC.append(file)
+    # for file in glob.glob(filepath + '**/*.docx', recursive=True):
+    #     LIST_OF_FILES_DOCX.append(file)
+    # LIST_OF_FILES = LIST_OF_FILES_DOC + LIST_OF_FILES_DOCX + LIST_OF_FILES_PDF
+
+    LIST_OF_FILES = list_of_resumes
 
     print("Total Files to Parse\t", len(LIST_OF_FILES))
     print("####### PARSING ########")
     for indx, file in enumerate(LIST_OF_FILES):
         Ordered_list_Resume.append(file)
-        Temp = file.split(".")
+        Temp = file.split('.')
+
         if Temp[1] == "pdf" or Temp[1] == "Pdf" or Temp[1] == "PDF":
             try:
                 # print("This is PDF", indx)
-                with open(file, 'rb') as pdf_file:
+                with open(filepath + file, 'rb') as pdf_file:
                     read_pdf = PyPDF2.PdfFileReader(pdf_file)
 
                     number_of_pages = read_pdf.getNumPages()
@@ -122,7 +125,7 @@ def res(jobfile):
             # print("This is DOC", file)
 
             try:
-                a = textract.process(file)
+                a = textract.process(filepath)
                 a = a.replace(b'\n', b' ')
                 a = a.replace(b'\r', b' ')
                 b = str(a)
@@ -134,7 +137,7 @@ def res(jobfile):
         if Temp[1] == "docx" or Temp[1] == "Docx" or Temp[1] == "DOCX":
             # print("This is DOCX", file)
             try:
-                a = textract.process(file)
+                a = textract.process(filepath+file)
                 a = a.replace(b'\n', b' ')
                 a = a.replace(b'\r', b' ')
                 b = str(a)
@@ -152,17 +155,17 @@ def res(jobfile):
     LIST_OF_TXT_FILES = []
     job_desc_filepath = 'jobDetails/'
 
-    with open(job_desc_filepath + jobfile, 'r') as f:
-        text = re.sub(' +', ' ', f.read())
-
+    # with open(job_desc_filepath + jobfile, 'r') as f:
+    #     text = re.sub(' +', ' ', f.read())
     try:
+        text = re.sub(' +', ' ', job_desc)
         tttt = str(text)
         tttt = normalize(word_tokenize(tttt))
         text = [' '.join(tttt)]
     except:
         text = 'None'
 
-    f.close()
+    # f.close()
 
     # get tf-idf
     # print("Normalized Job Description:\n", tttt)
@@ -192,7 +195,7 @@ def res(jobfile):
     result_arr = dict()
     for indx, file in enumerate(Resume_Vector):
         samples = file
-        name = getFileName(Ordered_list_Resume[indx])
+        name = Ordered_list_Resume[indx]
         neigh = NearestNeighbors(n_neighbors=1)
         neigh.fit(samples)
         NearestNeighbors(algorithm='auto', leaf_size=30)
@@ -202,10 +205,9 @@ def res(jobfile):
         # print(score)
         result_arr[indx] = {'name': name, 'score': score}
 
-    jobFileName = jobfile.split('.')[0]
-    result_arr = get_rank(result_arr, jobFileName)
-    writeResultInJson(result_arr, jobFileName)
-    show_rank(result_arr, jobFileName)
+    result_arr = get_rank(result_arr)
+    # writeResultInJson(result_arr, jobFileName)
+    # show_rank(result_arr, jobFileName)
 
     return result_arr
 

@@ -70,9 +70,11 @@ class PostJob(models.Model):
 class Apply_job(models.Model):
     name = models.CharField(max_length=50)
     email = models.EmailField(max_length=50)
-    portfolio = models.CharField(max_length=50)
-    cv = models.FileField(null=True)
+    # portfolio = models.CharField(max_length=50)
+    cv = models.FileField(default="")
     coverletter = models.CharField(max_length=100)
+    company_name = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name

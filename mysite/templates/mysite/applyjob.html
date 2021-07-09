@@ -94,7 +94,9 @@
                     <h1 class="text-white font-weight-bold">Apply for Job</h1>
                     <div class="custom-breadcrumbs">
                         <a href="#">Home</a> <span class="mx-2 slash">/</span>
-                        <span class="text-white"><strong>Apply for job</strong></span>
+                        <span class="text-white"><strong>{{ company_name }}</strong></span>
+                        <span class="text-white mx-2 slash">/</span>
+                        <span class="text-white"><strong>{{ title }}</strong></span>
                     </div>
                 </div>
             </div>
@@ -142,9 +144,9 @@
                                     </button>
                                 </div>
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="inputGroupFile03"
-                                           aria-describedby="inputGroupFileAddon03">
                                     <label class="custom-file-label" for="inputGroupFile03">Upload CV</label>
+                                    <input type="file" class="custom-file-input" id="inputGroupFile03" name="cv"
+                                           aria-describedby="inputGroupFileAddon03">
                                 </div>
                             </div>
                         </div>
