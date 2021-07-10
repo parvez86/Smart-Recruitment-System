@@ -4,6 +4,8 @@ from django.contrib.auth.models import User, auth
 from django.core.files.storage import FileSystemStorage
 from mysite import models
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 from mysite.models import Contact
 from mysite.models import PostJob
@@ -15,7 +17,7 @@ from django.contrib.auth.decorators import login_required
 
 # write your code
 def index(request):
-    job_list = PostJob.objects.all()
+    job_list = PostJob.objects.get_queryset().order_by('id')
     total_jobs = job_list.count()
     total_users = User.objects.all().count()
     total_companies = PostJob.objects.all().count()
@@ -121,7 +123,7 @@ def job_single(request, id):
 
 
 def job_listings(request):
-    job_list = PostJob.objects.all()
+    job_list = PostJob.objects.get_queryset().order_by('id')
     total_jobs = job_list.count()
     total_users = User.objects.all().count()
     total_companies = PostJob.objects.all().count()
@@ -226,20 +228,14 @@ def applyjob(request, id):
         name = request.POST['name']
         email = request.POST['email']
         print(name, email)
-        cv = request.FILES.get('cv')
-        # if 'cv' in request.POST:
-        #     cv = request.FILES['cv']
-        # else:
-        #     cv = False
+        cv = request.FILES['cv']
+        print(cv)
         coverletter = request.POST['coverletter']
-        # job_id = request.
 
-        # fs = FileSystemStorage
-        # fs.save(cv.name, cv)
         ins = Apply_job(name=name, email=email, cv=cv, coverletter=coverletter, company_name=job.company_name, title=job.title)
         ins.save()
         print("The Data is saved into database!")
-        #redirect('index')
+        return redirect('index')
     return render(request, 'mysite/applyjob.html', {'company_name': job.company_name, 'title': job.title})
 
 

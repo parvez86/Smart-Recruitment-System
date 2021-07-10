@@ -110,9 +110,8 @@
                 <div class="col-lg-6 mb-5 mb-lg-0">
                     <h3 class="text font-weight ">Apply for the Job</h3>
                     <br>
-                    <form method="post">
+                    <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-
                         <div class="row form-group">
                             <div class="col-md-12">
                                 <label class="text-black" for="name">Full Name</label>
