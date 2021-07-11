@@ -60,6 +60,19 @@ def remove_stopwords(words):
     return new_words
 
 
+def get_keywords(words):
+    keywords = open('jobDetails/keywords.txt', 'r').read().replace('\n', '').replace(' ', '').split(',')
+    print(keywords)
+    print(words)
+    new_words = list()
+    for word in words:
+        if word in keywords:
+            new_words.append(word)
+
+    print(new_words)
+    return new_words
+
+
 def stem_words(words):
     """Stem words in list of tokenized words"""
     stemmer = LancasterStemmer()
@@ -86,6 +99,7 @@ def normalize(words):
     words = remove_punctuation(words)
     words = replace_numbers(words)
     words = remove_stopwords(words)
+    words = get_keywords(words)
     words = stem_words(words)
     words = lemmatize_verbs(words)
     return words

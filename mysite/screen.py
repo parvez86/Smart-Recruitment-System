@@ -46,6 +46,7 @@ def get_rank(result_dict=None):
 
     if result_dict == None:
         return {}
+
     # new_result_dict = sorted(result_dict.items(), key=lambda item: float(item[1]["score"]), reverse=False)
     new_result_dict = OrderedDict(sorted(result_dict.items(), key=lambda item: getitem(item[1], 'score'), reverse=False))
     new_updated_result_dict = {}
@@ -68,17 +69,15 @@ def show_rank(result_dict=None, jobfileName='job1', top_k=20):
 # start parse
 
 
-def res(jobfile, job_desc, list_of_resumes):
+def res(job_desc, list_of_resumes, jobfilename):
     Resume_Vector = []
     Ordered_list_Resume = []
-    Ordered_list_Resume_Score = []
-    LIST_OF_FILES = []
-    LIST_OF_FILES_PDF = []
-    LIST_OF_FILES_DOC = []
-    LIST_OF_FILES_DOCX = []
     Resumes = []
     Temp_pdf = []
+
+    # resumes file path
     filepath = 'media/'
+
     # for file in glob.glob(filepath + '**/*.pdf', recursive=True):
     #     LIST_OF_FILES_PDF.append(file)
     #     print(file)
@@ -110,11 +109,13 @@ def res(jobfile, job_desc, list_of_resumes):
                                                                                                  '').replace(
                             '\\u[0-9]+', '').replace('\\ufb[0-9]+', '')
                         # page_content.replace("\r", "")
+
                         Temp_pdf = str(Temp_pdf) + str(page_content)
-                        # Temp_pdf.append(page_content)
                         # print(Temp_pdf)
+
                     Resumes.extend([Temp_pdf])
                     Temp_pdf = ''
+
                     # f = open(str(i)+str("+") , 'w')
                     # f.write(page_content)
                     # f.close()
@@ -157,6 +158,8 @@ def res(jobfile, job_desc, list_of_resumes):
 
     # with open(job_desc_filepath + jobfile, 'r') as f:
     #     text = re.sub(' +', ' ', f.read())
+    #     f.close()
+    print('Sample job description: \n', job_desc)
     try:
         text = re.sub(' +', ' ', job_desc)
         tttt = str(text)
@@ -164,20 +167,19 @@ def res(jobfile, job_desc, list_of_resumes):
         text = [' '.join(tttt)]
     except:
         text = 'None'
+    print("\nNormalized Job Description:\n", text)
 
-    # f.close()
 
     # get tf-idf
-    # print("Normalized Job Description:\n", tttt)
     vectorizer = CountVectorizer(stop_words='english')
     transformar = TfidfTransformer()
     vectorizer.fit(text)
     vector = transformar.fit_transform(vectorizer.transform(text).toarray())
     Job_Desc = vector.toarray()
-    # print("TF-IDF weight  (For Job Description):\n", Job_Desc)
+    print("\nTF-IDF weight  (For Job Description):\n", Job_Desc, '\n')
+
 
     for file in Resumes:
-
         text = file
         tttt = str(text)
         try:
@@ -187,11 +189,13 @@ def res(jobfile, job_desc, list_of_resumes):
 
             vector = transformar.fit_transform(vectorizer.transform(text).toarray())
 
-            # aaa = vector.toarray()
-            print("TF-IDF weight(For Resumes): \n", vector.toarray())
-            Resume_Vector.append(vector.toarray())
+            aaa = vector.toarray()
+            print("TF-IDF weight(For Resumes): \n", aaa)
+            Resume_Vector.append(aaa)
         except:
             pass
+
+    # ranking process
     result_arr = dict()
     for indx, file in enumerate(Resume_Vector):
         samples = file
@@ -206,12 +210,12 @@ def res(jobfile, job_desc, list_of_resumes):
         result_arr[indx] = {'name': name, 'score': score}
 
     result_arr = get_rank(result_arr)
-    # writeResultInJson(result_arr, jobFileName)
-    # show_rank(result_arr, jobFileName)
+    writeResultInJson(result_arr, jobfilename)
+    show_rank(result_arr, jobfilename)
 
     return result_arr
 
 
-if __name__ == '__main__':
-    inputStr = input("")
-    # sear(inputStr)
+# if __name__ == '__main__':
+#     inputStr = input("")
+#     # sear(inputStr)

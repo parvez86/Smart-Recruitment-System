@@ -4,7 +4,7 @@ from django.contrib.auth.models import User, auth
 from django.core.files.storage import FileSystemStorage
 from mysite import models
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, request
 from django.urls import reverse
 
 from mysite.models import Contact
@@ -13,6 +13,7 @@ from mysite.models import Apply_job
 import mysite.screen as screen
 import re
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
 
 
 # write your code
@@ -31,13 +32,13 @@ def index(request):
     except EmptyPage:
         qs = paginator.page(paginator.num_pages)
     if qs.has_previous():
-        page_show_min = (qs.previous_page_number()-1)*query_num + 1
+        page_show_min = (qs.previous_page_number() - 1) * query_num + 1
     elif total_jobs > 0:
         page_show_min = 1
     else:
         page_show_min = 0
     if qs.has_next():
-        page_show_max = (qs.previous_page_number()+1)*query_num - 1
+        page_show_max = (qs.previous_page_number() + 1) * query_num - 1
     else:
         page_show_max = total_jobs
     context = {
@@ -59,11 +60,11 @@ def login(request):
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            return render(request, 'mysite/index.html')
+            print(user)
+            return redirect('index')
         else:
             messages.info(request, 'Invalid Credentials')
             return redirect('login')
-            # return redirect('/')
 
     else:
         return render(request, 'mysite/login.html')
@@ -181,12 +182,14 @@ def post_job(request):
         job_location = request.POST['job_location']
         salary = request.POST['salary']
         application_deadline = request.POST['application_deadline']
-        ins = PostJob(title=title, company_name=company_name, employment_status=employment_status, vacancy=vacancy, gender=gender, details=details,
-                      responsibilities=responsibilities, experience=experience, other_benefits=other_benefits, job_location=job_location, salary=salary, application_deadline=application_deadline)
+        ins = PostJob(title=title, company_name=company_name, employment_status=employment_status, vacancy=vacancy,
+                      gender=gender, details=details,
+                      responsibilities=responsibilities, experience=experience, other_benefits=other_benefits,
+                      job_location=job_location, salary=salary, application_deadline=application_deadline)
         ins.save()
         jobfilepath = 'jobDetails/'
         job_desc = details + '\n' + responsibilities + '\n' + experience + '\n';
-        with open(jobfilepath + company_name+'_'+title + '.txt', 'w+') as file:
+        with open(jobfilepath + company_name + '_' + title + '.txt', 'w+') as file:
             file.write(re.sub(' +', ' ', job_desc))
         print("The data has been added into database!")
     return render(request, 'mysite/post-job.html')
@@ -196,7 +199,7 @@ def contact(request):
     if request.method == "POST":
         name = request.POST['name']
         email = request.POST['email']
-        #phone = request.POST['phone']
+        # phone = request.POST['phone']
         if 'phone' in request.POST:
             phone = request.POST['phone']
         else:
@@ -212,8 +215,8 @@ def contact(request):
         else:
             desc = False
 
-        #desc = request.POST['desc']
-        #print(name, email, phone, subject, desc)
+        # desc = request.POST['desc']
+        # print(name, email, phone, subject, desc)
         ins = Contact(name=name, email=email, phone=phone, subject=subject, desc=desc)
         ins.save()
         print("Data has been save in database!")
@@ -232,7 +235,8 @@ def applyjob(request, id):
         print(cv)
         coverletter = request.POST['coverletter']
 
-        ins = Apply_job(name=name, email=email, cv=cv, coverletter=coverletter, company_name=job.company_name, title=job.title)
+        ins = Apply_job(name=name, email=email, cv=cv, coverletter=coverletter, company_name=job.company_name,
+                        title=job.title)
         ins.save()
         print("The Data is saved into database!")
         return redirect('index')
@@ -243,11 +247,25 @@ def applyjob(request, id):
 def ranking(request, id):
     job_query = PostJob.objects.get(id=id)
     print(job_query.id, job_query.title, job_query.company_name)
-    jodfilename = job_query.company_name+'_'+job_query.title+'.txt'
-    jo_desc= job_query.details + '\n' + job_query.responsibilities + '\n' + job_query.experience + '\n';
-    resumes_name = Apply_job.objects.filter(company_name=job_query.company_name, title=job_query.title, cv__isnull=False)
+    jobfilename = job_query.company_name + '_' + job_query.title + '.txt'
+    job_desc = job_query.details + '\n' + job_query.responsibilities + '\n' + job_query.experience + '\n';
+    resumes_name = Apply_job.objects.filter(company_name=job_query.company_name, title=job_query.title,
+                                            cv__isnull=False)
     resumes = [str(item.cv) for item in resumes_name]
     resumes_new = [item.split(':')[0] for item in resumes]
     resumes_new = [item for item in resumes_new if item != '']
-    result_arr = screen.res(jodfilename, jo_desc, resumes_new)
-    return render(request, 'mysite/ranking.html', {'items': result_arr, 'company_name': job_query.company_name, 'title': job_query.title})
+    result_arr = screen.res(jobfilename=jobfilename, job_desc= re.sub(r' +', ' ' ,job_desc.replace('\n', '').replace('\r', '')), list_of_resumes=resumes_new)
+    return render(request, 'mysite/ranking.html',
+                  {'items': result_arr, 'company_name': job_query.company_name, 'title': job_query.title})
+
+
+class SearchView(ListView):
+    model = PostJob
+    template_name = 'mysite/search.html'
+    context_object_name = 'all_job'
+
+    def get_queryset(self):
+        return self.model.objects.filter(title__contains=self.request.GET['title'],
+                                         job_location__contains=self.request.GET['job_location'],
+                                         employment_status__contains=self.request.GET['employment_status'])
+

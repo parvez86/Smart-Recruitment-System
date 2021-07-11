@@ -84,11 +84,11 @@
             </div>
 
             <div class="row mb-5">
+{#              <div class="col-6">#}
+{#                <a href="{% url 'applyjob' id=q.id %}" class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Save Job</a>#}
+{#              </div>#}
               <div class="col-6">
-                <a href="applyjob.html" class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Save Job</a>
-              </div>
-              <div class="col-6">
-                <a href="applyjob.html" class="btn btn-block btn-primary btn-md">Apply Now</a>
+                <a href="{% url 'applyjob' id=q.id %}" class="btn btn-block btn-primary btn-md">Apply Now</a>
               </div>
             </div>
 
