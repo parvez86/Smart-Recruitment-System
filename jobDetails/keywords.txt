@@ -1,0 +1,10 @@
+web Scraper, software testing, project management, communication skills, research assistant, data analysis, technical design, problem solving, scrapper api,
+assembly, bash, c c++, c#, coffeescript, emacs lisp, go!, groovy, haskell, java, javascript, matlab, max MSP, objective c, perl, php, html,
+xml, css, bootstrap, python, ruby, sml, swift, latex unity, unix, visual basic, wolfram language, xquery, sql, node.js, scala, kdb, jquery, mongodb,
+express.js, angular.js, vue.js, asp.net, react.js, hyperledger fabric, aws cloud, android, mysql, couchdb, microsoft sql server, oracle, redis,
+postgresql, orientdb, mariadb, sqlite, couchbase, cassandra, hadoop, tensorflow, firebase, google api, developer, programmer, automation, planning, organization,
+analytical, implement, leadership, data scientist, engineer, winner, runner up, runners up, participation, hackathon, ideas, contest, honors, awards, phd, ma, mcom,
+msc, ba, bachelor, bcs, bcom, undergraduate, graduate, need, developer, develop, developing, good, working, knowledge, web,  candidates, must, hardworking, innovative,
+skills, persist, pressure, good, knowledge, java, jsp, excellent, capability, handle, database, especially, familiar, mvc, pattern, advanced, knowledge, great, excellent,
+capability, requirements, technical, implementation, years, progressive, energetic, testing, framework, automation, debugging, .net, crm, crud, orm, rest, laravel, api,
+ui, ux, nodejs, backend api, full-stack, front-end, graphql, blazor, xamarin, collaborate
