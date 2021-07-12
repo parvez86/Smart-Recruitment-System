@@ -1,0 +1,44 @@
+Job title:  Senior Software Engineer, Python/ Django
+
+Company name: Circle FinTech Ltd
+
+Job Type: Full Time
+
+Vacancy: 03
+
+Gender: Both
+
+Description:
+We are looking for Senior Python/ Django Developers responsible for the development, maintenance
+and deployment of banking mobile applications. Your main responsibilities will be developing backend systems
+for different banks and different types of financial institutions following proper architecture patterns and
+smart code. Therefore we are looking for developers who are committed to solve problems collaboratively,
+follow design patterns and develop quality products.
+
+Job Responsibilities:
+Build robust and scalable software in a different type of programming language.
+Integration of user-facing elements developed  server-side logic
+Building reusable code and libraries for future use
+Optimization of the application for maximum speed and scalability
+Implementation of security and data protection
+Design and implementation of data storage solutions
+Different types of API integration
+Cross-team Collaboration for developing the best solutions
+To write documentation of all codes produced and update/upgrade them whenever applicable.
+To participate in database and API design and provide inputs or run tests when necessary.
+To learn and adapt to new technologies/platforms when needed and write production codes with it.
+Help improve  code quality through writing unit tests, automation and performing code reviews
+Participate in brainstorming sessions and contribute ideas to technology, algorithms, and products
+Dive into difficult problems and successfully deliver results on schedule.
+
+Experience: 3-5 Years
+
+Other Benefits:
+Attractive Salary, Work from home, Yearly Salary Review, Weekly two Holidays, Two Festival Bonus
+
+Job Location: Uttara, Dhaka.
+
+Salary: Negotiable
+
+Application deadline:
+
