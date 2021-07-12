@@ -1,5 +1,5 @@
 
-import re, string, unicodedata
+import re, string, unicodedata, os
 import nltk
 # import contractions
 import inflect
@@ -61,15 +61,16 @@ def remove_stopwords(words):
 
 
 def get_keywords(words):
-    keywords = open('jobDetails/keywords.txt', 'r').read().replace('\n', '').replace(' ', '').split(',')
-    print(keywords)
-    print(words)
+    # keywords = open('jobDetails/keywords.txt', 'r').read().replace('\n', '').replace(' ', '').split(',')
+    # keywords = open('../jobDetails/normalized_keywords.txt', 'r').read().replace('\n', '').split(' ')
+
+    keywords = open('jobDetails/normalized_keywords.txt', 'r').read().replace('\n', '').split(' ')
+
     new_words = list()
     for word in words:
         if word in keywords:
             new_words.append(word)
 
-    print(new_words)
     return new_words
 
 
@@ -99,14 +100,16 @@ def normalize(words):
     words = remove_punctuation(words)
     words = replace_numbers(words)
     words = remove_stopwords(words)
-    words = get_keywords(words)
     words = stem_words(words)
     words = lemmatize_verbs(words)
+    words = get_keywords(words)
     return words
 
-#
-# job_desc = re.sub(' +', ' ', open('../jobDetails/Reve Systems Ltd._Web Developer.txt').read())
-# print("Job_description: \n",job_desc)
+
+# for understanding
+# print(os.getcwd())
+# job_desc = re.sub(' +', ' ', open('../jobDetails/keywords.txt').read())
+# print("Job_description: \n", job_desc)
 #
 # words = nltk.word_tokenize(job_desc)
 # print("After tokenization:\n", words)

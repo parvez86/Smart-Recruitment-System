@@ -7,4 +7,6 @@ analytical, implement, leadership, data scientist, engineer, winner, runner up, 
 msc, ba, bachelor, bcs, bcom, undergraduate, graduate, need, developer, develop, developing, good, working, knowledge, web,  candidates, must, hardworking, innovative,
 skills, persist, pressure, good, knowledge, java, jsp, excellent, capability, handle, database, especially, familiar, mvc, pattern, advanced, knowledge, great, excellent,
 capability, requirements, technical, implementation, years, progressive, energetic, testing, framework, automation, debugging, .net, crm, crud, orm, rest, laravel, api,
-ui, ux, nodejs, backend api, full-stack, front-end, graphql, blazor, xamarin, collaborate
+ui, ux, nodejs, backend api, full-stack, front-end, graphql, blazor, xamarin, collaborate, spring, hibernate, jdbc, postgis, machine learning,deep learning, tcp/ip,
+maven, apache spark, gradle, scrum, agile, dom manipulation, flux, redux, restful api, next.js, blockchain , typescript, kanban, code-splitting, chunking, lazy loading,
+resgression testing, interpersonal, django, kivy, flask, cherrypy, pyqt, flutter

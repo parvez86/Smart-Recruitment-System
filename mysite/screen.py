@@ -159,7 +159,7 @@ def res(job_desc, list_of_resumes, jobfilename):
     # with open(job_desc_filepath + jobfile, 'r') as f:
     #     text = re.sub(' +', ' ', f.read())
     #     f.close()
-    print('Sample job description: \n', job_desc)
+    # print('Sample job description: \n', job_desc)
     try:
         text = re.sub(' +', ' ', job_desc)
         tttt = str(text)
@@ -210,7 +210,7 @@ def res(job_desc, list_of_resumes, jobfilename):
         result_arr[indx] = {'name': name, 'score': score}
 
     result_arr = get_rank(result_arr)
-    writeResultInJson(result_arr, jobfilename)
+    # writeResultInJson(result_arr, jobfilename)
     show_rank(result_arr, jobfilename)
 
     return result_arr

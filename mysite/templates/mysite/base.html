@@ -79,7 +79,7 @@
                         <li><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
 
                         {% if user.is_authenticated %}
-                            <li>Hello,{{ user.first_name }}</li>
+                            <li>Hello, {{ user.username }}</li>
                             <li><a href="{% url 'logout' %}"> Log Out </a></li>
 
                         {% else %}

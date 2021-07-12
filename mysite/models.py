@@ -39,6 +39,11 @@ GENDER = (
     ('Any', 'Any'),
 )
 
+CANDIDATE_GENDER = (
+    ('Male', 'Male'),
+    ('Female', 'Female'),
+)
+
 
 # For post a job
 class PostJob(models.Model):
@@ -70,6 +75,7 @@ class PostJob(models.Model):
 class Apply_job(models.Model):
     name = models.CharField(max_length=50)
     email = models.EmailField(max_length=50)
+    # gender = models.CharField(choices=CANDIDATE_GENDER, max_length=30, default='Male')
     # portfolio = models.CharField(max_length=50)
     cv = models.FileField(default="")
     coverletter = models.CharField(max_length=100)

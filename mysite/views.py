@@ -6,6 +6,7 @@ from mysite import models
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect, request
 from django.urls import reverse
+from django.db.models import Count
 
 from mysite.models import Contact
 from mysite.models import PostJob
@@ -21,7 +22,7 @@ def index(request):
     job_list = PostJob.objects.get_queryset().order_by('id')
     total_jobs = job_list.count()
     total_users = User.objects.all().count()
-    total_companies = PostJob.objects.all().count()
+    total_companies = PostJob.objects.values('company_name').annotate(Count('company_name', distinct=True))
     query_num = 5
     paginator = Paginator(job_list, query_num)
     page = request.GET.get('page')
@@ -47,7 +48,7 @@ def index(request):
         'job_len': total_jobs,
         'curr_page1': page_show_min,
         'curr_page2': page_show_max,
-        'companies': total_companies,
+        'companies': total_companies.count(),
         'candidates': total_users
     }
     return render(request, "mysite/index.html", context=context)
@@ -99,7 +100,7 @@ def register(request):
         else:
             messages.info(request, 'Password is not matching!')
             return redirect('register')
-        return redirect('/')
+        # return redirect('index')
 
     else:
         return render(request, 'mysite/register.html')
@@ -127,7 +128,7 @@ def job_listings(request):
     job_list = PostJob.objects.get_queryset().order_by('id')
     total_jobs = job_list.count()
     total_users = User.objects.all().count()
-    total_companies = PostJob.objects.all().count()
+    total_companies = PostJob.objects.values('company_name').annotate(Count('company_name', distinct=True))
     query_num = 7
     paginator = Paginator(job_list, query_num)
     page = request.GET.get('page')
@@ -153,7 +154,7 @@ def job_listings(request):
         'job_len': total_jobs,
         'curr_page1': page_show_min,
         'curr_page2': page_show_max,
-        'companies': total_companies,
+        'companies': total_companies.count,
         'candidates': total_users
     }
     return render(request, "mysite/job-listings.html", context=context)
@@ -182,16 +183,26 @@ def post_job(request):
         job_location = request.POST['job_location']
         salary = request.POST['salary']
         application_deadline = request.POST['application_deadline']
-        ins = PostJob(title=title, company_name=company_name, employment_status=employment_status, vacancy=vacancy,
-                      gender=gender, details=details,
-                      responsibilities=responsibilities, experience=experience, other_benefits=other_benefits,
-                      job_location=job_location, salary=salary, application_deadline=application_deadline)
-        ins.save()
-        jobfilepath = 'jobDetails/'
-        job_desc = details + '\n' + responsibilities + '\n' + experience + '\n';
-        with open(jobfilepath + company_name + '_' + title + '.txt', 'w+') as file:
-            file.write(re.sub(' +', ' ', job_desc))
-        print("The data has been added into database!")
+        job = PostJob.objects.filter(title=title, company_name=company_name, employment_status=employment_status)
+        print(job)
+        if not job:
+            ins = PostJob(title=title, company_name=company_name, employment_status=employment_status, vacancy=vacancy,
+                          gender=gender, details=details,
+                          responsibilities=responsibilities, experience=experience, other_benefits=other_benefits,
+                          job_location=job_location, salary=salary, application_deadline=application_deadline)
+            ins.save()
+            messages.info(request, 'Job successfully posted!')
+
+            # storing job description
+            # jobfilepath = 'jobDetails/'
+            # job_desc = details + '\n' + responsibilities + '\n' + experience + '\n';
+            # with open(jobfilepath + company_name + '_' + title + '.txt', 'w+') as file:
+            #     file.write(re.sub(' +', ' ', job_desc))
+            print("The data has been added into database!")
+        else:
+            messages.info(request, 'This job is already posted!')
+            print('This job is already posted!')
+        return redirect('job-listings')
     return render(request, 'mysite/post-job.html')
 
 
@@ -220,7 +231,10 @@ def contact(request):
         ins = Contact(name=name, email=email, phone=phone, subject=subject, desc=desc)
         ins.save()
         print("Data has been save in database!")
-    return render(request, "mysite/contact.html")
+        return redirect('/')
+
+    else:
+        return render(request, "mysite/contact.html")
 
 
 @login_required(login_url='login')
@@ -234,12 +248,14 @@ def applyjob(request, id):
         cv = request.FILES['cv']
         print(cv)
         coverletter = request.POST['coverletter']
-
+        Apply_job.objects.filter(name=name, email__exact=email, company_name=job.company_name, title=job.title).delete()
         ins = Apply_job(name=name, email=email, cv=cv, coverletter=coverletter, company_name=job.company_name,
-                        title=job.title)
+                            title=job.title)
         ins.save()
+        messages.info(request, 'Successfully applied for the post!')
         print("The Data is saved into database!")
-        return redirect('index')
+        return redirect('job-listings')
+
     return render(request, 'mysite/applyjob.html', {'company_name': job.company_name, 'title': job.title})
 
 
@@ -254,7 +270,7 @@ def ranking(request, id):
     resumes = [str(item.cv) for item in resumes_name]
     resumes_new = [item.split(':')[0] for item in resumes]
     resumes_new = [item for item in resumes_new if item != '']
-    result_arr = screen.res(jobfilename=jobfilename, job_desc= re.sub(r' +', ' ' ,job_desc.replace('\n', '').replace('\r', '')), list_of_resumes=resumes_new)
+    result_arr = screen.res(jobfilename=jobfilename, job_desc=re.sub(r' +', ' ', job_desc.replace('\n', '').replace('\r', '')), list_of_resumes=resumes_new)
     return render(request, 'mysite/ranking.html',
                   {'items': result_arr, 'company_name': job_query.company_name, 'title': job_query.title})
 
