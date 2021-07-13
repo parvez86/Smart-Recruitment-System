@@ -259,20 +259,32 @@ def applyjob(request, id):
     return render(request, 'mysite/applyjob.html', {'company_name': job.company_name, 'title': job.title})
 
 
+# @login_required
+# def ranking(request, id):
+#     job_query = PostJob.objects.get(id=id)
+#     print(job_query.id, job_query.title, job_query.company_name)
+#     jobfilename = job_query.company_name + '_' + job_query.title + '.txt'
+#     job_desc = job_query.details + '\n' + job_query.responsibilities + '\n' + job_query.experience + '\n';
+#     resumes_name = Apply_job.objects.filter(company_name=job_query.company_name, title=job_query.title,
+#                                             cv__isnull=False)
+#     resumes = [str(item.cv) for item in resumes_name]
+#     resumes_new = [item.split(':')[0] for item in resumes]
+#     resumes_new = [item for item in resumes_new if item != '']
+#     result_arr = screen.res(jobfilename=jobfilename, job_desc=re.sub(r' +', ' ', job_desc.replace('\n', '').replace('\r', '')), list_of_resumes=resumes_new)
+#     return render(request, 'mysite/ranking.html',
+#                   {'items': result_arr, 'company_name': job_query.company_name, 'title': job_query.title})
+
 @login_required
 def ranking(request, id):
-    job_query = PostJob.objects.get(id=id)
-    print(job_query.id, job_query.title, job_query.company_name)
-    jobfilename = job_query.company_name + '_' + job_query.title + '.txt'
-    job_desc = job_query.details + '\n' + job_query.responsibilities + '\n' + job_query.experience + '\n';
-    resumes_name = Apply_job.objects.filter(company_name=job_query.company_name, title=job_query.title,
+    job_data = PostJob.objects.get(id=id)
+    print(job_data.id, job_data.title, job_data.company_name)
+    jobfilename = job_data.company_name + '_' + job_data.title + '.txt'
+    job_desc = job_data.details + '\n' + job_data.responsibilities + '\n' + job_data.experience + '\n';
+    resumes_data = Apply_job.objects.filter(company_name=job_data.company_name, title=job_data.title,
                                             cv__isnull=False)
-    resumes = [str(item.cv) for item in resumes_name]
-    resumes_new = [item.split(':')[0] for item in resumes]
-    resumes_new = [item for item in resumes_new if item != '']
-    result_arr = screen.res(jobfilename=jobfilename, job_desc=re.sub(r' +', ' ', job_desc.replace('\n', '').replace('\r', '')), list_of_resumes=resumes_new)
+    result_arr = screen.res(resumes_data, job_data)
     return render(request, 'mysite/ranking.html',
-                  {'items': result_arr, 'company_name': job_query.company_name, 'title': job_query.title})
+                  {'items': result_arr, 'company_name': job_data.company_name, 'title': job_data.title})
 
 
 class SearchView(ListView):

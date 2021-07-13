@@ -42,52 +42,27 @@ def writeResultInJson(data, jobfile='job1'):
         f.close()
 
 
-def get_rank(result_dict=None):
-
-    if result_dict == None:
-        return {}
-
-    # new_result_dict = sorted(result_dict.items(), key=lambda item: float(item[1]["score"]), reverse=False)
-    new_result_dict = OrderedDict(sorted(result_dict.items(), key=lambda item: getitem(item[1], 'score'), reverse=False))
-    new_updated_result_dict = {}
-    indx = 0
-    for _, item in new_result_dict.items():
-        item['rank'] = indx + 1
-        new_updated_result_dict[indx] = item
-        indx += 1
-    return new_updated_result_dict
-
-
-def show_rank(result_dict=None, jobfileName='job1', top_k=20):
-    if (result_dict == None):
-        filepath = 'result/' + jobfileName + '.json'
-        result_dict = readResultInJson(filepath)
-    print("\nResult:")
-    for _, result in result_dict.items():
-        # print(result)
-        print(f"Rank: {result['rank']}\t Total Score:{round(result['score'], 5)} (NN distance) \tName:{result['name']}")
-# start parse
-
-
-def res(job_desc, list_of_resumes, jobfilename):
-    Resume_Vector = []
+def check_basicRequirement(resumes_data, job_data):
     Ordered_list_Resume = []
     Resumes = []
     Temp_pdf = []
 
+    # filter resumes based on the gender
+    if job_data.gender == 'Male':
+        resumes_data = resumes_data.filter(gender='Male')
+    elif job_data.gender == 'Female':
+        resumes_data = resumes_data.filter(gender='Female')
+
+
     # resumes file path
     filepath = 'media/'
 
-    # for file in glob.glob(filepath + '**/*.pdf', recursive=True):
-    #     LIST_OF_FILES_PDF.append(file)
-    #     print(file)
-    # for file in glob.glob(filepath + '**/*.doc', recursive=True):
-    #     LIST_OF_FILES_DOC.append(file)
-    # for file in glob.glob(filepath + '**/*.docx', recursive=True):
-    #     LIST_OF_FILES_DOCX.append(file)
-    # LIST_OF_FILES = LIST_OF_FILES_DOC + LIST_OF_FILES_DOCX + LIST_OF_FILES_PDF
 
-    LIST_OF_FILES = list_of_resumes
+    resumes = [str(item.cv) for item in resumes_data]
+    resumes_new = [item.split(':')[0] for item in resumes]
+    resumes_new = [item for item in resumes_new if item != '']
+
+    LIST_OF_FILES = resumes_new
 
     print("Total Files to Parse\t", len(LIST_OF_FILES))
     print("####### PARSING ########")
@@ -138,7 +113,7 @@ def res(job_desc, list_of_resumes, jobfilename):
         if Temp[1] == "docx" or Temp[1] == "Docx" or Temp[1] == "DOCX":
             # print("This is DOCX", file)
             try:
-                a = textract.process(filepath+file)
+                a = textract.process(filepath + file)
                 a = a.replace(b'\n', b' ')
                 a = a.replace(b'\r', b' ')
                 b = str(a)
@@ -151,15 +126,50 @@ def res(job_desc, list_of_resumes, jobfilename):
             # print("This is EXE", file)
             pass
     print("Done Parsing.")
+    return Resumes, Ordered_list_Resume
+
+
+def get_rank(result_dict=None):
+
+    if result_dict == None:
+        return {}
+
+    # new_result_dict = sorted(result_dict.items(), key=lambda item: float(item[1]["score"]), reverse=False)
+    new_result_dict = OrderedDict(sorted(result_dict.items(), key=lambda item: getitem(item[1], 'score'), reverse=False))
+    new_updated_result_dict = {}
+    indx = 0
+    for _, item in new_result_dict.items():
+        item['rank'] = indx + 1
+        new_updated_result_dict[indx] = item
+        indx += 1
+    return new_updated_result_dict
+
+
+def show_rank(result_dict=None, jobfileName='job1', top_k=20):
+    if (result_dict == None):
+        filepath = 'result/' + jobfileName + '.json'
+        result_dict = readResultInJson(filepath)
+    print("\nResult:")
+    for _, result in result_dict.items():
+        # print(result)
+        print(f"Rank: {result['rank']}\t Total Score:{round(result['score'], 5)} (NN distance) \tName:{result['name']}")
+
+
+# start parsing
+def res(resumes_data, job_data):
+
+    # checking basic requirements
+    Resumes, Ordered_list_Resume = check_basicRequirement(resumes_data, job_data)
+
+
+    # job-description
 
     Job_Desc = 0
-    LIST_OF_TXT_FILES = []
     job_desc_filepath = 'jobDetails/'
+    jobfilename = job_data.company_name + '_' + job_data.title + '.txt'
+    job_desc = job_data.details + '\n' + job_data.responsibilities + '\n' + job_data.experience + '\n';
+    job_desc = re.sub(r' +', ' ', job_desc.replace('\n', '').replace('\r', ''))
 
-    # with open(job_desc_filepath + jobfile, 'r') as f:
-    #     text = re.sub(' +', ' ', f.read())
-    #     f.close()
-    # print('Sample job description: \n', job_desc)
     try:
         text = re.sub(' +', ' ', job_desc)
         tttt = str(text)
@@ -170,7 +180,7 @@ def res(job_desc, list_of_resumes, jobfilename):
     print("\nNormalized Job Description:\n", text)
 
 
-    # get tf-idf
+    # get tf-idf of Job Description
     vectorizer = CountVectorizer(stop_words='english')
     transformar = TfidfTransformer()
     vectorizer.fit(text)
@@ -178,7 +188,8 @@ def res(job_desc, list_of_resumes, jobfilename):
     Job_Desc = vector.toarray()
     print("\nTF-IDF weight  (For Job Description):\n", Job_Desc, '\n')
 
-
+    # get TF-IDF of Candidate Resumes
+    Resume_Vector = []
     for file in Resumes:
         text = file
         tttt = str(text)
@@ -213,9 +224,5 @@ def res(job_desc, list_of_resumes, jobfilename):
     # writeResultInJson(result_arr, jobfilename)
     show_rank(result_arr, jobfilename)
 
+    # return resultant shortlist
     return result_arr
-
-
-# if __name__ == '__main__':
-#     inputStr = input("")
-#     # sear(inputStr)
