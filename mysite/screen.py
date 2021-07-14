@@ -13,6 +13,13 @@ from collections import OrderedDict
 from .text_process import normalize
 from nltk.tokenize import word_tokenize
 
+
+from collections import Counter, defaultdict
+from datetime import datetime
+from dateutil import relativedelta
+from typing import *
+
+
 warnings.filterwarnings(action='ignore', category=UserWarning, module='gensim')
 
 
@@ -42,7 +49,216 @@ def writeResultInJson(data, jobfile='job1'):
         f.close()
 
 
+def getNumberOfMonths(datepair) -> int:
+    """
+    Helper function to extract total months of experience from a resume
+    :param date1: Starting date
+    :param date2: Ending date
+    :return: months of experience from date1 to date2
+        """
+    # if years
+    # if years
+    date2_parsed = False
+    if datepair.get("fh", None) is not None:
+        gap = datepair["fh"]
+    else:
+        gap = ""
+    try:
+        present_vocab = ("present", "date", "now")
+        if "syear" in datepair:
+            date1 = datepair["fyear"]
+            date2 = datepair["syear"]
+
+            if date2.lower() in present_vocab:
+                date2 = datetime.now()
+                date2_parsed = True
+
+            try:
+                if not date2_parsed:
+                    date2 = datetime.strptime(str(date2), "%Y")
+                date1 = datetime.strptime(str(date1), "%Y")
+            except:
+                pass
+        elif "smonth_num" in datepair:
+            date1 = datepair["fmonth_num"]
+            date2 = datepair["smonth_num"]
+
+            if date2.lower() in present_vocab:
+                date2 = datetime.now()
+                date2_parsed = True
+
+            for stype in ("%m" + gap + "%Y", "%m" + gap + "%y"):
+                try:
+                    if not date2_parsed:
+                        date2 = datetime.strptime(str(date2), stype)
+                    date1 = datetime.strptime(str(date1), stype)
+                    break
+                except:
+                    pass
+        else:
+            date1 = datepair["fmonth"]
+            date2 = datepair["smonth"]
+
+            if date2.lower() in present_vocab:
+                date2 = datetime.now()
+                date2_parsed = True
+
+            for stype in (
+                "%b" + gap + "%Y",
+                "%b" + gap + "%y",
+                "%B" + gap + "%Y",
+                "%B" + gap + "%y",
+            ):
+                try:
+                    if not date2_parsed:
+                        date2 = datetime.strptime(str(date2), stype)
+                    date1 = datetime.strptime(str(date1), stype)
+                    break
+                except:
+                    pass
+
+        months_of_experience = relativedelta.relativedelta(date2, date1)
+        months_of_experience = (
+            months_of_experience.years * 12 + months_of_experience.months
+        )
+        return months_of_experience
+    except Exception as e:
+        return 0
+
+
+def getTotalExperience(experience_list) -> int:
+    """
+    Wrapper function to extract total months of experience from a resume
+    :param experience_list: list of experience text extracted
+    :return: total months of experience
+    """
+    exp_ = []
+    for line in experience_list:
+        line = line.lower().strip()
+        # have to split search since regex OR does not capture on a first-come-first-serve basis
+        experience = re.search(
+            r"(?P<fyear>\d{4})\s*(\s|-|to)\s*(?P<syear>\d{4}|present|date|now)",
+            line,
+            re.I,
+        )
+        if experience:
+            d = experience.groupdict()
+            exp_.append(d)
+            continue
+
+        experience = re.search(
+            r"(?P<fmonth>\w+(?P<fh>.)\d+)\s*(\s|-|to)\s*(?P<smonth>\w+(?P<sh>.)\d+|present|date|now)",
+            line,
+            re.I,
+        )
+        if experience:
+            d = experience.groupdict()
+            exp_.append(d)
+            continue
+
+        experience = re.search(
+            r"(?P<fmonth_num>\d+(?P<fh>.)\d+)\s*(\s|-|to)\s*(?P<smonth_num>\d+(?P<sh>.)\d+|present|date|now)",
+            line,
+            re.I,
+        )
+        if experience:
+            d = experience.groupdict()
+            exp_.append(d)
+            continue
+    experience_num_list = [getNumberOfMonths(i) for i in exp_]
+    total_experience_in_months = sum(experience_num_list)
+    return total_experience_in_months
+
+
+def getTotalExperienceFormatted(exp_list) -> str:
+    months = getTotalExperience(exp_list)
+    if months < 12:
+        return str(months) + " months"
+    years = months // 12
+    months = months % 12
+    return str(years) + " years " + str(months) + " months"
+
+
+def findWorkAndEducation(categories=None, doc, text, name) -> Dict[str, List[str]]:
+    categories = {"Work": ["(Work|WORK)", "(Experience(s?)|EXPERIENCE(S?))", "(History|HISTORY)"]}
+    inv_data = {v[0][1]: (v[0][0], k) for k, v in categories.items()}
+    line_count = 0
+    exp_list = defaultdict(list)
+    name = name.lower()
+
+    current_line = None
+    is_dot = False
+    is_space = True
+    continuation_sent = []
+    first_line = None
+    unique_char_regex = "[^\sA-Za-z0-9\.\/\(\)\,\-\|]+"
+
+    for line in text.split("\n"):
+        line = re.sub(r"\s+", " ", line).strip()
+        match = re.search(r"^.*:", line)
+        if match:
+            line = line[match.end():].strip()
+
+        # get first non-space line for filtering since
+        # sometimes it might be a page header
+        if line and first_line is None:
+            first_line = line
+
+        # update line_countfirst since there are `continue`s below
+        line_count += 1
+        if (line_count - 1) in inv_data:
+            current_line = inv_data[line_count - 1][1]
+        # contains a full-blown state-machine for filtering stuff
+        elif current_line == "Work":
+            if line:
+                # if name is inside, skip
+                if name == line:
+                    continue
+                # if like first line of resume, skip
+                if line == first_line:
+                    continue
+                # check if it's not a list with some unique character as list bullet
+                has_dot = re.findall(unique_char_regex, line[:5])
+                # if last paragraph is a list item
+                if is_dot:
+                    # if this paragraph is not a list item and the previous line is a space
+                    if not has_dot and is_space:
+                        if line[0].isupper() or re.findall(r"^\d+\.", line[:5]):
+                            exp_list[current_line].append(line)
+                            is_dot = False
+
+                else:
+                    if not has_dot and (
+                        line[0].isupper() or re.findall(r"^\d+\.", line[:5])
+                    ):
+                        exp_list[current_line].append(line)
+                        is_dot = False
+                if has_dot:
+                    is_dot = True
+                is_space = False
+            else:
+                is_space = True
+        elif current_line == "Education":
+            if line:
+                # if not like first line
+                if line == first_line:
+                    continue
+                line = re.sub(unique_char_regex, '', line[:5]) + line[5:]
+                if len(line) < 12:
+                    continuation_sent.append(line)
+                else:
+                    if continuation_sent:
+                        continuation_sent.append(line)
+                        line = " ".join(continuation_sent)
+                        continuation_sent = []
+                    exp_list[current_line].append(line)
+
+    return exp_list
+
+
 def check_basicRequirement(resumes_data, job_data):
+
+    # print(job_experience)
     Ordered_list_Resume = []
     Resumes = []
     Temp_pdf = []
@@ -88,8 +304,11 @@ def check_basicRequirement(resumes_data, job_data):
                         Temp_pdf = str(Temp_pdf) + str(page_content)
                         # print(Temp_pdf)
 
-                    Resumes.extend([Temp_pdf])
+                    if getTotalExperienceFormatted(findWorkAndEducation('Work')):
+                        Resumes.extend([Temp_pdf])
+                    # Resumes.extend([Temp_pdf])
                     Temp_pdf = ''
+
 
                     # f = open(str(i)+str("+") , 'w')
                     # f.write(page_content)
@@ -126,6 +345,8 @@ def check_basicRequirement(resumes_data, job_data):
             # print("This is EXE", file)
             pass
     print("Done Parsing.")
+
+
     return Resumes, Ordered_list_Resume
 
 
