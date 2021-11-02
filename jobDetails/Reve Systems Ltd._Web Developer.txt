@@ -1,3 +1,34 @@
-We need some fresh developer having good working knowledge on web developing. The candidates must be hardworking, innovative, good-communication skills, and persist under pressure..
- Very good knowledge of Java, JSP Excellent capability to handle database, especially on MySql Familiar with MVC pattern Advanced knowledge of HTML/CSS/javascript Great communication skill Excellent capability to translate complex client requirements to technical implementation.
-0-2 years
+Job title: Web developer
+
+Company name: Reve Systems Ltd.
+
+Job Type: Part-time
+
+Vacancy: 02
+
+Gender: Both
+
+Description:
+We need some fresh developer having good working knowledge on web developing.
+Very good knowledge of Java, JSP Excellent capability to handle database, especially on MySql Familiar with MVC pattern Advanced knowledge of HTML/CSS/javascript Great communication skill Excellent capability to translate complex client requirements to technical implementation.
+The candidates must be hardworking, innovative, good-communication skills, and persist under pressure..
+
+Salary: 15-20k
+
+Job Responsibilities:
+Integration of user-facing elements developed by a front-end developer with server-side logic.
+Building reusable code and libraries for future use and optimization of the application for maximum speed and scalability.
+Implementation of security and data protection. Design and implementation of data architecture storage solutions.
+Supervise server resources and cross-platform optimization across Internet browsers and operating systems.
+Use databases, web servers, wireframe development, and UI/UX design in the development procedure.
+Working knowledge of MongoDB and MySQL.
+Fair Understanding of building RESTful APIs.
+
+Experience: 0-1 years
+
+Other Benefits:
+Attractive Salary, Work from home, Weekly two Holidays
+Job Location: Banani, Dhaka
+
+Deadline:
+

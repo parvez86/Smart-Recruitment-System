@@ -248,8 +248,9 @@ def applyjob(request, id):
         cv = request.FILES['cv']
         print(cv)
         coverletter = request.POST['coverletter']
+        gender = request.POST['gender']
         Apply_job.objects.filter(name=name, email__exact=email, company_name=job.company_name, title=job.title).delete()
-        ins = Apply_job(name=name, email=email, cv=cv, coverletter=coverletter, company_name=job.company_name,
+        ins = Apply_job(name=name, email=email, cv=cv, coverletter=coverletter, company_name=job.company_name, gender=gender,
                             title=job.title)
         ins.save()
         messages.info(request, 'Successfully applied for the post!')

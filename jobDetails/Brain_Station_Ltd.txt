@@ -1,0 +1,35 @@
+Job title:  Python Developer
+Company name: Brain Station 23 Ltd.
+
+Job Type: Full Time
+
+Vacancy: 03
+
+Gender: Both
+Description:
+We are looking for Python/ Django Developers responsible for the development, maintenance
+and deployment of banking mobile applications. Your main responsibilities will be developing backend systems
+for different banks and different types of financial institutions following proper architecture patterns and
+smart code. Therefore we are looking for developers who are committed to solve problems collaboratively,
+follow design patterns and develop quality products.
+
+Job Responsibilities:
+Ability to deliver clean, well-structured OOP code written in Python while following test-driven development practices.
+Proven development experience of RESTful APIs using a Python web framework such as Django.
+Experience working with ORMs like SQLAlchemy or Django.
+Experience in developing large server-side applications and microservices.
+Familiar with Git and building and setting up CI/CD workflows.
+Comfortable using Linux as well as Windows.
+
+
+Experience: 1-3 Years
+
+Other Benefits:
+Attractive Salary, Work from home, Yearly Salary Review, Weekly two Holidays, Two Festival Bonus
+
+Job Location: 8th floor, Plot#2, Amtoli, Bir Uttam AK Khandakar Rd Mohakhali Commercial Area, Dhaka-1212
+Salary: 35k-70k
+
+Deadline: 13th August 2021
+
+N.B: Only shortlisted candidate will get call for our recruitment process.

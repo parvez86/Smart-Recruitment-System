@@ -1,3 +1,44 @@
-Pridesys IT is looking for a proactive and passionate full-stack web developer (Software Engineer & Sr. Software Engineer) with a good manner, who can work on developing front + back end Web application and has a solid understanding of the software development life cycle from planning to development, testing, release, and post-sale services. We look for candidates who will also be responsible for the operational and strategic management of the business. The candidates are expected to participate in the decision-making process and contribute to growing the business.
- Develop customized solutions in Java and PHP platforms and meet project objectives, client requirements, and company goals. • Communicate with project managers, and other developers to design cohesive project strategies and ensure effective collaboration throughout all phases of development, testing, and deployment. • Contribute to all phases of the development lifecycle • Write well designed, testable, efficient code and accompanying documentation where needed • Maintain high standards of software quality within the team by establishing good practices and habits. • Show a helping attitude to teammates and take initiative to solve their problem. Bachelor of Science (BSc) in CSE, Bachelor of Science (BSc) in CS • or CIS or Diploma from any reputed public or private university/institute. Experience Requirements • 2 to 6 year(s) • The applicants should have experience in the following area(s): Angular, PHP or JAVA, SQL Additional Requirements • Both males and females are allowed to apply • At least 2+ years proven experience with Angular 6+ • Programming Languages Skills: TypeScript, JavaScript, Angular, RxJS, NgRx, SASS/LESS. • Software and Technology Skills: REST API, JSON, XML • Experience with leading projects through all phases of a software development lifecycle. • Should have a good understanding of PHP/JAVA frameworks (Like Laravel, Spring Boot) will be added value • Knowledge of object-oriented design including design pattern • Familiarity with relational and NoSQL database • Proficient in using code versioning tools, such as Git, SVN. • Good working experience in HTML5, Bootstrap 4, CSS3, JavaScript, TypeScript and XML. • Experience on TDD and Docker will be an extra advantage.
-2-5 years
+
+
+Job title: Full-Stack Developer
+
+Company name: Dynamic Solution Innovations
+
+Job Type: Full-time
+
+Gender: Male
+
+Vacancy: 0-3 years
+
+Description:
+Pridesys IT is looking for a proactive and passionate full-stack web developer (Software Engineer & Sr. Software Engineer) with a good manner, who can work on developing front + back end Web application and has a solid understanding of the software development life cycle from planning to development, testing, release, and post-sale services. We look for candidates who will also be responsible for the operational and strategic management of the business.
+The candidates are expected to participate in the decision-making process and contribute to growing the business.
+Develop customized solutions in Java and PHP platforms and meet project objectives, client requirements, and company goals.
+Communicate with project managers, and other developers to design cohesive project strategies and ensure effective collaboration throughout all phases of development, testing, and deployment. • Contribute to all phases of the development lifecycle • Write well designed, testable, efficient code and accompanying documentation where needed • Maintain high standards of software quality within the team by establishing good practices and habits. • Show a helping attitude to teammates and take initiative to solve their problem. Bachelor of Science (BSc) in CSE, Bachelor of Science (BSc) in CS • or CIS or Diploma from any reputed public or private university/institute. Experience Requirements • 2 to 6 year(s) • The applicants should have experience in the following area(s): Angular, PHP or JAVA, SQL Additional Requirements • Both males and females are allowed to apply • At least 2+ years proven experience with Angular 6+ • Programming Languages Skills: TypeScript, JavaScript, Angular, RxJS, NgRx, SASS/LESS. • Software and Technology Skills: REST API, JSON, XML • Experience with leading projects through all phases of a software development lifecycle. • Should have a good understanding of PHP/JAVA frameworks (Like Laravel, Spring Boot) will be added value • Knowledge of object-oriented design including design pattern • Familiarity with relational and NoSQL database • Proficient in using code versioning tools, such as Git, SVN.
+Good working experience in HTML5, Bootstrap 4, CSS3, JavaScript, TypeScript and XML.
+Experience on TDD and Docker will be an extra advantage.
+
+
+Salary: Negotiable
+
+Job Responsibilities:
+Develop web-based software and apps using Symfony/PHP/Django/Python/Node.js.
+Develop APIs, web apps, and backend code.
+Work with designers to implement their designs in code.
+Collaborate with team members to determine requirements and identify solutions.
+Collaborate with team members on technical design of the product.
+Develop test plans and execute tests to ensure quality code meets business requirements.
+Report bugs or potential issues identified during testing to the appropriate stakeholders.
+Provide mentoring and guidance to junior developers on the team.
+Establish coding guidelines for the team (e.g., code formatting) - Maintain code quality by following best practices in Symfony, PHP, Django, Python, Node.js, etc.
+Participate in code reviews to provide feedback on other developer’s work.
+
+Experience: 0-2 years
+
+Other Benefits:
+Attractive Salary, Work from home, Yearly Salary Review, Weekly two Holidays, Two Festival Bonus
+
+Job Location: Gulshan, Dhaka
+
+Deadline: 15 August, 2021
+

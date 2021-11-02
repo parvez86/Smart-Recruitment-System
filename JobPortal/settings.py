@@ -75,10 +75,10 @@ WSGI_APPLICATION = 'JobPortal.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mysite',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'resume_ranker',
+        'USER': 'ResumeRanker',
+        'PASSWORD': '12345#sp',
         'HOST': 'localhost'
 
     }

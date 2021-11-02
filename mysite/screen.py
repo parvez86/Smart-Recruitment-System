@@ -12,7 +12,9 @@ from operator import getitem
 from collections import OrderedDict
 from .text_process import normalize
 from nltk.tokenize import word_tokenize
-
+import mysite.configurations as regex
+from datetime import date
+from . import utils
 
 from collections import Counter, defaultdict
 from datetime import datetime
@@ -170,16 +172,103 @@ def getTotalExperience(experience_list) -> int:
     return total_experience_in_months
 
 
-def getTotalExperienceFormatted(exp_list) -> str:
+"""
+Utility Function that calculates experience in the resume text
+params: resume_text type:string
+returns: experience type:int
+"""
+def calculate_experience(resume_text):
+  #
+  def get_month_index(month):
+    month_dict = {'jan':1, 'feb':2, 'mar':3, 'apr':4, 'may':5, 'jun':6, 'jul':7, 'aug':8, 'sep':9, 'oct':10, 'nov':11, 'dec':12}
+    return month_dict[month.lower()]
+
+  try:
+    experience = 0
+    start_month = -1
+    start_year = -1
+    end_month = -1
+    end_year = -1
+    regular_expression = re.compile(regex.date_range, re.IGNORECASE)
+    regex_result = re.search(regular_expression, resume_text)
+    while regex_result:
+      date_range = regex_result.group()
+      year_regex = re.compile(regex.year)
+      year_result = re.search(year_regex, date_range)
+      if (start_year == -1) or (int(year_result.group()) <= start_year):
+        start_year = int(year_result.group())
+        month_regex = re.compile(regex.months_short, re.IGNORECASE)
+        month_result = re.search(month_regex, date_range)
+        if month_result:
+          current_month = get_month_index(month_result.group())
+          if (start_month == -1) or (current_month < start_month):
+            start_month = current_month
+      if date_range.lower().find('present') != -1:
+        end_month = date.today().month # current month
+        end_year = date.today().year # current year
+      else:
+        year_result = re.search(year_regex, date_range[year_result.end():])
+        if (end_year == -1) or (int(year_result.group()) >= end_year):
+          end_year = int(year_result.group())
+          month_regex = re.compile(regex.months_short, re.IGNORECASE)
+          month_result = re.search(month_regex, date_range)
+          if month_result:
+            current_month = get_month_index(month_result.group())
+            if (end_month == -1) or (current_month > end_month):
+              end_month = current_month
+      resume_text = resume_text[regex_result.end():]
+      regex_result = re.search(regular_expression, resume_text)
+
+    return end_year - start_year  # Use the obtained month attribute
+  except Exception as exception_instance:
+    # logging.error('Issue calculating experience: '+str(exception_instance))
+    print('Issue calculating experience: '+str(exception_instance))
+    return None
+
+
+def get_experience_year(job_expr):
+    job_expr = str.split(job_expr, ' ')[0]
+    if '-' in job_expr:
+        expr = job_expr.split('-')
+        return int(expr[0])*12, int(expr[1])*12
+    return int(job_expr)*12, -1
+
+
+def getTotalExperienceFormatted(exp_list, job_expr) -> bool:
+# def getTotalExperienceFormatted(text, job_expr) -> bool:
+    min_yr_in_month, max_yr_in_month = get_experience_year(job_expr)
+    # print(min_yr_in_month, max_yr_in_month)
+    # print(exp_list)
     months = getTotalExperience(exp_list)
-    if months < 12:
-        return str(months) + " months"
-    years = months // 12
-    months = months % 12
-    return str(years) + " years " + str(months) + " months"
+    # months = 0
+    # for line in text.split("\n"):
+    #     line = re.sub(r"\s+", " ", line).strip()
+    #     match = re.search(r"^.*:", line)
+    #     if match:
+    #         months += calculate_experience(line)
+
+    # months = calculate_experience(text)
 
 
-def findWorkAndEducation(categories=None, doc, text, name) -> Dict[str, List[str]]:
+    # entities = utils.extract_entity_sections_grad(text)
+    # months = round(utils.get_total_experience(entities['experience']) / 12, 2)
+    # print(months)
+    if max_yr_in_month != -1:
+        if (months >= min_yr_in_month) and (months <= max_yr_in_month):
+            return True
+    else:
+        if months >= min_yr_in_month:
+            return True
+    return False
+
+    # if months < 12:
+    #     return str(months) + " months"
+    # years = months // 12
+    # months = months % 12
+    # return str(years) + " years " + str(months) + " months"
+
+
+def findWorkAndEducation(text, name) -> Dict[str, List[str]]:
     categories = {"Work": ["(Work|WORK)", "(Experience(s?)|EXPERIENCE(S?))", "(History|HISTORY)"]}
     inv_data = {v[0][1]: (v[0][0], k) for k, v in categories.items()}
     line_count = 0
@@ -257,7 +346,6 @@ def findWorkAndEducation(categories=None, doc, text, name) -> Dict[str, List[str
 
 
 def check_basicRequirement(resumes_data, job_data):
-
     # print(job_experience)
     Ordered_list_Resume = []
     Resumes = []
@@ -290,7 +378,8 @@ def check_basicRequirement(resumes_data, job_data):
             try:
                 # print("This is PDF", indx)
                 with open(filepath + file, 'rb') as pdf_file:
-                    read_pdf = PyPDF2.PdfFileReader(pdf_file)
+                    # read_pdf = PyPDF2.PdfFileReader(pdf_file)
+                    read_pdf = PyPDF2.PdfFileReader(pdf_file, strict=False)
 
                     number_of_pages = read_pdf.getNumPages()
                     for page_number in range(number_of_pages):
@@ -303,8 +392,10 @@ def check_basicRequirement(resumes_data, job_data):
 
                         Temp_pdf = str(Temp_pdf) + str(page_content)
                         # print(Temp_pdf)
-
-                    if getTotalExperienceFormatted(findWorkAndEducation('Work')):
+                    #
+                    # if getTotalExperienceFormatted(findWorkAndEducation(Temp_pdf, 'Work'), job_data.experience):
+                    if getTotalExperienceFormatted(Temp_pdf,  job_data.experience):
+                        # print('True')
                         Resumes.extend([Temp_pdf])
                     # Resumes.extend([Temp_pdf])
                     Temp_pdf = ''
@@ -346,7 +437,6 @@ def check_basicRequirement(resumes_data, job_data):
             pass
     print("Done Parsing.")
 
-
     return Resumes, Ordered_list_Resume
 
 
@@ -377,6 +467,7 @@ def show_rank(result_dict=None, jobfileName='job1', top_k=20):
 
 
 # start parsing
+# result
 def res(resumes_data, job_data):
 
     # checking basic requirements
