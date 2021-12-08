@@ -54,7 +54,7 @@ def getNumberOfMonths(datepair) -> int:
     :param date2: Ending date
     :return: months of experience from date1 to date2
         """
-
+    # if years
     # if years
     date2_parsed = False
     if datepair.get("fh", None) is not None:
@@ -174,11 +174,13 @@ params: resume_text type:string
 returns: experience type:int
 """
 def calculate_experience(resume_text):
+  #
   def get_month_index(month):
     month_dict = {'jan':1, 'feb':2, 'mar':3, 'apr':4, 'may':5, 'jun':6, 'jul':7, 'aug':8, 'sep':9, 'oct':10, 'nov':11, 'dec':12}
     return month_dict[month.lower()]
 
   try:
+    experience = 0
     start_month = -1
     start_year = -1
     end_month = -1
@@ -231,11 +233,31 @@ def get_experience_year(job_expr):
 # for 2nd method
 def getTotalExperienceFormatted(exp_list, job_expr) -> bool:
 
+# for 1st method
+# def getTotalExperienceFormatted(text, job_expr) -> bool:
+
+    # for 2nd method
     min_yr_in_month, max_yr_in_month = get_experience_year(job_expr)
     print(min_yr_in_month, max_yr_in_month)
     print(exp_list)
     months = getTotalExperience(exp_list)
 
+    # for 1st mehtod
+    # months = 0
+    # for line in text.split("\n"):
+    #     line = re.sub(r"\s+", " ", line).strip()
+    #     match = re.search(r"^.*:", line)
+    #     if match:
+    #         months += calculate_experience(line)
+    #
+    # months = calculate_experience(text)
+    #
+    #
+    # entities = utils.extract_entity_sections_grad(text)
+    # months = round(utils.get_total_experience(entities['experience']) / 12, 2)
+    # print(months)
+
+    # for 2nd method
     if max_yr_in_month != -1:
         if (months >= min_yr_in_month) and (months <= max_yr_in_month):
             return True
@@ -243,6 +265,13 @@ def getTotalExperienceFormatted(exp_list, job_expr) -> bool:
         if months >= min_yr_in_month:
             return True
     return False
+
+
+    # if months < 12:
+    #     return str(months) + " months"
+    # years = months // 12
+    # months = months % 12
+    # return str(years) + " years " + str(months) + " months"
 
 
 def findWorkAndEducation(text, name) -> Dict[str, List[str]]:
@@ -334,8 +363,10 @@ def check_basicRequirement(resumes_data, job_data):
     elif job_data.gender == 'Female':
         resumes_data = resumes_data.filter(gender='Female')
 
+
     # resumes file path
     filepath = 'media/'
+
 
     resumes = [str(item.cv) for item in resumes_data]
     resumes_new = [item.split(':')[0] for item in resumes]
@@ -368,10 +399,16 @@ def check_basicRequirement(resumes_data, job_data):
                         Temp_pdf = str(Temp_pdf) + str(page_content)
                         # print(Temp_pdf)
 
-                    if getTotalExperienceFormatted(Temp_pdf,  job_data.experience):
-                        Resumes.extend([Temp_pdf])
+                    # 1st method
+                    # if getTotalExperienceFormatted(findWorkAndEducation(Temp_pdf, 'Work'), job_data.experience):
 
+                    # 2nd method
+                    if getTotalExperienceFormatted(Temp_pdf,  job_data.experience):
+                        # print('True')
+                        Resumes.extend([Temp_pdf])
+                    # Resumes.extend([Temp_pdf])
                     Temp_pdf = ''
+
 
                     # f = open(str(i)+str("+") , 'w')
                     # f.write(page_content)
@@ -505,6 +542,7 @@ def res(resumes_data, job_data):
         result_arr[indx] = {'name': name, 'score': score}
 
     result_arr = get_rank(result_arr)
+    # writeResultInJson(result_arr, jobfilename)
     show_rank(result_arr, jobfilename)
 
     # return resultant shortlist

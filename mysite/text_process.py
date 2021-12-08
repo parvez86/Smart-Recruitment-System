@@ -1,12 +1,7 @@
-
-import re, string, unicodedata, os
-import nltk
-# import contractions
+import re, unicodedata
 import inflect
-from bs4 import BeautifulSoup
-from nltk import word_tokenize, sent_tokenize
-from nltk.corpus import stopwords
 from nltk.stem import LancasterStemmer, WordNetLemmatizer
+from stop_words import get_stop_words
 
 
 def remove_non_ascii(words):
@@ -53,9 +48,10 @@ def replace_numbers(words):
 def remove_stopwords(words):
     """Remove stop words from list of tokenized words"""
     new_words = []
+    stp_words = list(get_stop_words('en'))
     for word in words:
         # print(word)
-        if word not in stopwords.words('english'):
+        if word not in stp_words:
             new_words.append(word)
     return new_words
 
