@@ -28,3 +28,21 @@ The project aims to develop a more flexible, realistic and expert resume ranker 
 - **Generate Document Similarity Score:** Using the KNN (K-Nearest Neighbour) model and the TF-IDF weight of the resumes, the system generates a document similarity score (KNN-score) of each resumes according to the job description.
 - **Ranking:** Based on the KNN-scores, the system ranks the resumes and shortlists them.
 
+<!-- # Project Features
+
+| Home Page   | Job List| Single Job Details  |
+|:---------------:  |:-----------:|:-------:|
+|![home_page]|![job_list]|![single_job]  |
+
+
+| Apply Job   | Shortlisted Candidates  |SignUp Page|
+|:-------------------:|:-----------------------:|:------------:|
+|![apply_job]|![ranking]|![signup_page]|
+
+
+[home_page]: https://github.com/parvez86/Smart-Recruitment-System/blob/main/ProjectPic/homepage.png
+[job_list]: https://github.com/parvez86/Smart-Recruitment-System/blob/main/ProjectPic/joblisting_page.png
+[single_job]: https://github.com/parvez86/Smart-Recruitment-System/blob/main/ProjectPic/single_job_details.png
+[apply_job]: https://github.com/parvez86/Smart-Recruitment-System/blob/main/ProjectPic/apply_job_page.png
+[ranking]: https://github.com/parvez86/Smart-Recruitment-System/blob/main/ProjectPic/rank_page.png
+[signup_page]:  https://github.com/parvez86/Smart-Recruitment-System/blob/main/ProjectPic/signup_page.png -->
