@@ -5,8 +5,6 @@ from django.utils import timezone
 
 
 # Create your models here.
-
-
 class Contact(models.Model):
     name = models.CharField(max_length=50)
     email = models.EmailField(max_length=111, default="")
@@ -36,7 +34,7 @@ CATEGORY = (
 GENDER = (
     ('Male', 'Male'),
     ('Female', 'Female'),
-    ('Any', 'Any'),
+    ('Both', 'Both'),
 )
 
 CANDIDATE_GENDER = (
@@ -76,6 +74,7 @@ class Apply_job(models.Model):
     name = models.CharField(max_length=50)
     email = models.EmailField(max_length=50)
     gender = models.CharField(choices=CANDIDATE_GENDER, max_length=30, default='Male')
+    experience = models.FloatField(default=0.0)
     # portfolio = models.CharField(max_length=50)
     cv = models.FileField(default="")
     coverletter = models.CharField(max_length=100)

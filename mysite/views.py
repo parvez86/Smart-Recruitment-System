@@ -58,7 +58,9 @@ def login(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
+        print()
         user = auth.authenticate(username=username, password=password)
+        print(user.is_active, user.is_staff)
         if user is not None:
             auth.login(request, user)
             print(user)
@@ -203,7 +205,7 @@ def post_job(request):
             messages.info(request, 'This job is already posted!')
             print('This job is already posted!')
         return redirect('job-listings')
-    return render(request, 'mysite/post-job.html')
+    return render(request, 'mysite/post-job.html', {})
 
 
 def contact(request):
@@ -245,12 +247,15 @@ def applyjob(request, id):
         name = request.POST['name']
         email = request.POST['email']
         print(name, email)
+        gender = request.POST['gender']
+        experience = request.POST['experience']
+        print(experience)
+
+        coverletter = request.POST['coverletter']
         cv = request.FILES['cv']
         print(cv)
-        coverletter = request.POST['coverletter']
-        gender = request.POST['gender']
         Apply_job.objects.filter(name=name, email__exact=email, company_name=job.company_name, title=job.title).delete()
-        ins = Apply_job(name=name, email=email, cv=cv, coverletter=coverletter, company_name=job.company_name, gender=gender,
+        ins = Apply_job(name=name, email=email, cv=cv, experience=experience,coverletter=coverletter, company_name=job.company_name, gender=gender,
                             title=job.title)
         ins.save()
         messages.info(request, 'Successfully applied for the post!')
@@ -275,7 +280,7 @@ def applyjob(request, id):
 #     return render(request, 'mysite/ranking.html',
 #                   {'items': result_arr, 'company_name': job_query.company_name, 'title': job_query.title})
 
-@login_required
+@login_required(login_url='login')
 def ranking(request, id):
     job_data = PostJob.objects.get(id=id)
     print(job_data.id, job_data.title, job_data.company_name)

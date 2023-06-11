@@ -1,0 +1,37 @@
+Job title: Python Developer
+
+Company name:specter.de
+
+Job Type: Full Time
+
+Vacancy: 02
+
+Gender: Both
+
+Description:
+We seek talented Python Developer to join our team at Spekter GmbH. If you have a strong background in Python development and a passion for creating efficient and scalable solutions, we want to hear from you! As a Python Developer, you will be responsible for developing and maintaining Python-based applications, collaborating with cross-functional teams, and contributing to the overall success of our projects.
+Skills We are Looking for:
+
+    Good understanding of data structures and Algorithms.
+    Good Knowledge of Python.
+    Basics of Nameko/Django/Flask.
+    Basics of Keras/Tensorflow/SciKit
+    Good if you have basics on Environment Frameworks like Conda or Mamba.
+
+It's Enough if you are good at DSA and PYTHON language. frameworks not mandatory, we can learn by doing
+
+Salary: 70k
+
+Job Responsibilities:
+    Writing python codes for our project.
+    Collaborate with team.
+    Learning new technologies when needed.
+Experience: 1-2 years
+
+Other Benefits:
+Attractive Salary, Work from home, Yearly Salary Review, Weekly two Holidays, Two Festival Bonus
+
+Job Location: Dhaka, Bangladesh
+
+Deadline:
+

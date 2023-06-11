@@ -35,14 +35,14 @@
 {#                        <br>#}
 {#                        <div class="col-md-6">#}
 {#                            <div class="input_field">#}
-{#                                 <label class="text-black" for="name">Email</label>#}
+{#                                 <label class="text-black" for="email">Email</label>#}
 {#                                <input type="email" id="email" name="email" placeholder="Email">#}
 {#                            </div>#}
 {#                        </div>#}
 {#                        <br>#}
 {#                        <div class="col-md-12">#}
 {#                            <div class="input_field">#}
-{#                                 <label class="text-black" for="name">Portfolio Link</label>#}
+{#                                 <label class="text-black" for="portfolio">Portfolio Link</label>#}
 {#                                <input type="text" id="portfolio" name="portfolio" placeholder="Website/Portfolio link">#}
 {#                            </div>#}
 {#                        </div>#}
@@ -137,9 +137,17 @@
                             </div>
                         </div>
 
+
                         <div class="row form-group">
                             <div class="col-md-12">
-                                <label class="text-black" for="description">Coverletter</label>
+                                <label for="experience">Experience Year</label>
+                                <input type="number" id="experience" name="experience" placeholder="0.0" required>
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <label class="text-black" for="coverletter">Coverletter</label>
                                 <textarea name="coverletter" id="coverletter" cols="30" rows="7" class="form-control"
                                           placeholder="Write your notes or questions here..."></textarea>
                             </div>
@@ -148,13 +156,13 @@
                         <div class="row form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <button type="button" id="inputGroupFileAddon03"><i class="fa fa-cloud-upload"
-                                                                                        aria-hidden="true"></i>
+                                    <button type="button" id="cv-upload-button">
+                                        <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                                     </button>
                                 </div>
                                 <div class="custom-file">
-                                    <label class="custom-file-label" for="inputGroupFile03">Upload CV</label>
-                                    <input type="file" class="custom-file-input" id="inputGroupFile03" name="cv"
+                                    <label class="custom-file-label" for="cv">Upload CV</label>
+                                    <input type="file" class="custom-file-input" id="cv" name="cv"
                                            aria-describedby="inputGroupFileAddon03" required>
                                 </div>
                             </div>
@@ -166,8 +174,6 @@
                                 <input type="submit" value="Submit" class="btn btn-primary btn-md text-white">
                             </div>
                         </div>
-
-
                     </form>
                 </div>
 

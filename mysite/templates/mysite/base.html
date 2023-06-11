@@ -81,14 +81,14 @@
                         {% if user.is_authenticated %}
                             <li>Hello, {{ user.username }}</li>
                             <li><a href="{% url 'logout' %}"> Log Out </a></li>
-
                         {% else %}
                             <li><a href="{% url 'register' %}">Sign Up</a></li>
 {#                            <li><a href="{% url 'login' %}">Log In</a></li>#}
 
                         {% endif %}
+                        {% if user.is_active and user.is_staff %}
 {#                        <li class="d-lg-none"><a href="post-job.html"><span class="mr-2">+</span> Post a Job</a></li>#}
-
+                        {% endif %}
                     </ul>
                 </nav>
 
@@ -96,9 +96,11 @@
                 <div class="right-cta-menu text-right d-flex aligin-items-center col-6">
                     <div class="ml-auto">
                         {% if user.is_authenticated %}
-                        <a href="{% url 'post-job' %}" class="btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span
-                                class="mr-2 icon-add"></span>Post a Job</a>
-                            {% else %}
+                            {% if user.is_active and user.is_staff %}
+                            <a href="{% url 'post-job' %}" class="btn btn-outline-white border-width-2 d-none d-lg-inline-block"><span
+                                    class="mr-2 icon-add"></span>Post a Job</a>
+                            {% endif %}
+                        {% else %}
                         <a href="{% url 'login' %}" class="btn btn-primary border-width-2 d-none d-lg-inline-block"><span
                                 class="mr-2 icon-lock_outline"></span>Log In</a>
                         {% endif %}

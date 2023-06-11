@@ -327,8 +327,9 @@ def check_basicRequirement(resumes_data, job_data):
     Ordered_list_Resume = []
     Resumes = []
     Temp_pdf = []
-
+    print(int(job_data.experience.split(' ')[0].split('-')[0]))
     # filter resumes based on the gender
+    resumes_data = resumes_data.filter(experience__gte=float(job_data.experience.split(' ')[0].split('-')[0]))
     if job_data.gender == 'Male':
         resumes_data = resumes_data.filter(gender='Male')
     elif job_data.gender == 'Female':
@@ -346,6 +347,7 @@ def check_basicRequirement(resumes_data, job_data):
     print("Total Files to Parse\t", len(LIST_OF_FILES))
     print("####### PARSING ########")
     for indx, file in enumerate(LIST_OF_FILES):
+        # print(indx, file)
         Ordered_list_Resume.append(file)
         Temp = file.split('.')
 
@@ -354,22 +356,26 @@ def check_basicRequirement(resumes_data, job_data):
                 # print("This is PDF", indx)
                 with open(filepath + file, 'rb') as pdf_file:
                     # read_pdf = PyPDF2.PdfFileReader(pdf_file)
-                    read_pdf = PyPDF2.PdfFileReader(pdf_file, strict=False)
+                    read_pdf = PyPDF2.PdfReader(pdf_file, strict=False)
 
-                    number_of_pages = read_pdf.getNumPages()
+                    number_of_pages = len(read_pdf.pages)
                     for page_number in range(number_of_pages):
-                        page = read_pdf.getPage(page_number)
-                        page_content = page.extractText()
+                        page = read_pdf.pages[page_number]
+                        page_content = page.extract_text()
+                        # print(page_content)
                         page_content = page_content.replace('\n', ' ').replace('\f', '').replace('\\uf[0-9]+',
                                                                                                  '').replace(
                             '\\u[0-9]+', '').replace('\\ufb[0-9]+', '')
                         # page_content.replace("\r", "")
 
                         Temp_pdf = str(Temp_pdf) + str(page_content)
+
                         # print(Temp_pdf)
 
-                    if getTotalExperienceFormatted(Temp_pdf,  job_data.experience):
                         Resumes.extend([Temp_pdf])
+
+                    # if getTotalExperienceFormatted(Temp_pdf,  job_data.experience):
+                    #     Resumes.extend([Temp_pdf])
 
                     Temp_pdf = ''
 
@@ -445,9 +451,7 @@ def res(resumes_data, job_data):
     # checking basic requirements
     Resumes, Ordered_list_Resume = check_basicRequirement(resumes_data, job_data)
 
-
     # job-description
-
     Job_Desc = 0
     job_desc_filepath = 'jobDetails/'
     jobfilename = job_data.company_name + '_' + job_data.title + '.txt'
@@ -462,7 +466,6 @@ def res(resumes_data, job_data):
     except:
         text = 'None'
     print("\nNormalized Job Description:\n", text)
-
 
     # get tf-idf of Job Description
     vectorizer = CountVectorizer(stop_words='english')
@@ -481,6 +484,7 @@ def res(resumes_data, job_data):
 
             tttt = normalize(word_tokenize(tttt))
             text = [' '.join(tttt)]
+            print("Normalized resume: ", text)
 
             vector = transformar.fit_transform(vectorizer.transform(text).toarray())
 

@@ -14,6 +14,11 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+PROJECT_DIR = os.path.join(os.path.abspath(os.path.dirname(__name__)), 'mysite')
+
+
 #BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -54,7 +59,7 @@ ROOT_URLCONF = 'JobPortal.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(PROJECT_DIR, 'templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -77,10 +82,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'resume_ranker',
-        'USER': 'ResumeRanker',
-        'PASSWORD': '12345#sp',
+        'USER': 'test',
+        'PASSWORD': '12345sp',
         'HOST': 'localhost'
-
     }
 }
 
@@ -120,8 +124,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(PROJECT_DIR, 'static')
 ]
 
 
