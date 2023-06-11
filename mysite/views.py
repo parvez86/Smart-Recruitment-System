@@ -79,6 +79,7 @@ def register(request):
         last_name = request.POST['last_name']
         username = request.POST['username']
         email = request.POST['email']
+        userType = request.POST['user_type']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
         # phone = request.POST['phone']
@@ -95,7 +96,7 @@ def register(request):
                 return redirect('register')
             else:
                 user = User.objects.create_user(first_name=first_name, last_name=last_name, username=username,
-                                                email=email, password=password1)
+                                                email=email, is_staff=userType, password=password1)
                 user.save()
                 messages.info(request, 'User Created!')
                 return redirect('login')
