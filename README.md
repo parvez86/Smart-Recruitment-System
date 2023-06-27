@@ -3,6 +3,45 @@ Finding the best candidate for a specific job from a recruitment process within 
 
 The project aims to develop a more flexible, realistic and expert resume ranker system that ranks the resumes effectively and efficiently and gives the best candidate or candidates. This is a simple Django-based resume ranker website where recruiter users post jobs, candidate-users apply for the job, fill in the required data, and upload resumes. The system ranks the resumes based on the document similarity of the job description and the resumes using the KNN model. It saves human efforts, time, and cost.
 
+# Installation
+Requires the following packages:
+  - Python 3.9.7 or higher
+  - Django 4.0 or higher
+  - pip 22.3.1 or higher
+
+It is recommended to use virtual environment packages such as virtualenv. Follow the steps below to setup the project:
+  - Clone this repository via  `git clone https://github.com/parvez86/Smart-Recruitment-System`
+  - Use this command to install required packages `pip install -r requirements.txt`
+  - Crate database and change database settings in `settings.py` according to your database. Install appropriate database connector if need.
+    - **Mysql**:
+       ```
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql', 
+                'NAME': 'DB_NAME',
+                'USER': 'DB_USER',
+                'PASSWORD': 'DB_PASSWORD',
+                'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+                'PORT': '3306',
+            }
+        }
+        ```
+    - **SQLite**:
+      ```
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': 'mydatabase', # This is where you put the name of the db file. 
+                         # If one doesn't exist, it will be created at migration time.
+            }
+        }
+      ```
+    - **Others**: See documentation, put appropriate database settings and install connector.
+  - Generate migration files of the project via terminal: `python manage.py makemigrations`
+  - Migrate the project files from terminal: `python manage.py migrate`
+  - Create admin user for admin panel from terminal: `python manage.py createsuperuser`. And enter the username, email and password. 
+  - Run the project from terminal: `python manage.py runserver`
+
 # System Architecture
 ![](ProjectPic/1_Recruitment_System_Architecture.png)
 - **Register/Login:** A user should be an authentic user to post a job or apply for a job.
