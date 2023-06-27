@@ -58,9 +58,11 @@ def login(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        print()
+        # print("user: ", username)
+        # print("password: ", password)
         user = auth.authenticate(username=username, password=password)
-        print(user.is_active, user.is_staff)
+        if user:
+            print(user.is_active, user.is_staff)
         if user is not None:
             auth.login(request, user)
             print(user)
@@ -98,6 +100,8 @@ def register(request):
                 user = User.objects.create_user(first_name=first_name, last_name=last_name, username=username,
                                                 email=email, is_staff=userType, password=password1)
                 user.save()
+                # print("username: ", user)
+                # print("password: ", password1)
                 messages.info(request, 'User Created!')
                 return redirect('login')
         else:
