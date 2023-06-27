@@ -259,6 +259,7 @@ def applyjob(request, id):
         coverletter = request.POST['coverletter']
         cv = request.FILES['cv']
         print(cv)
+        print(cv)
         Apply_job.objects.filter(name=name, email__exact=email, company_name=job.company_name, title=job.title).delete()
         ins = Apply_job(name=name, email=email, cv=cv, experience=experience,coverletter=coverletter, company_name=job.company_name, gender=gender,
                             title=job.title)
