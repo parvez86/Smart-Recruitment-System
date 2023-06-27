@@ -4,6 +4,7 @@ import re
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.neighbors import NearestNeighbors
 import PyPDF2
+import pathlib
 from json import load, dumps
 from operator import getitem
 from collections import OrderedDict
@@ -339,6 +340,7 @@ def check_basicRequirement(resumes_data, job_data):
     filepath = 'media/'
 
     resumes = [str(item.cv) for item in resumes_data]
+    print("resumes: ", resumes)
     resumes_new = [item.split(':')[0] for item in resumes]
     resumes_new = [item for item in resumes_new if item != '']
 
@@ -347,17 +349,22 @@ def check_basicRequirement(resumes_data, job_data):
     print("Total Files to Parse\t", len(LIST_OF_FILES))
     print("####### PARSING ########")
     for indx, file in enumerate(LIST_OF_FILES):
-        # print(indx, file)
+        print(indx, file)
+        if not pathlib.Path(filepath+file).is_file():
+            continue
         Ordered_list_Resume.append(file)
+
         Temp = file.split('.')
+        print(Temp)
 
         if Temp[1] == "pdf" or Temp[1] == "Pdf" or Temp[1] == "PDF":
             try:
                 # print("This is PDF", indx)
                 with open(filepath + file, 'rb') as pdf_file:
                     # read_pdf = PyPDF2.PdfFileReader(pdf_file)
-                    read_pdf = PyPDF2.PdfReader(pdf_file, strict=False)
 
+                    read_pdf = PyPDF2.PdfReader(pdf_file, strict=False)
+                    # print("resume", indx,": ", read_pdf)
                     number_of_pages = len(read_pdf.pages)
                     for page_number in range(number_of_pages):
                         page = read_pdf.pages[page_number]
@@ -447,6 +454,7 @@ def show_rank(result_dict=None, jobfileName='job1', top_k=20):
 # start parsing
 # result
 def res(resumes_data, job_data):
+    print(resumes_data.values('cv'))
 
     # checking basic requirements
     Resumes, Ordered_list_Resume = check_basicRequirement(resumes_data, job_data)
