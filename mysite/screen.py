@@ -9,6 +9,10 @@ from json import load, dumps
 from operator import getitem
 from collections import OrderedDict
 from .text_process import normalize
+
+import nltk
+nltk.download('punkt')
+
 from nltk.tokenize import word_tokenize
 import mysite.configurations as regex
 from datetime import date
@@ -328,9 +332,11 @@ def check_basicRequirement(resumes_data, job_data):
     Ordered_list_Resume = []
     Resumes = []
     Temp_pdf = []
-    print(int(job_data.experience.split(' ')[0].split('-')[0]))
+    # print(int(job_data.experience.split(' ')[0].split('-')[0]))
+    # print(len(resumes_data))
     # filter resumes based on the gender
     resumes_data = resumes_data.filter(experience__gte=float(job_data.experience.split(' ')[0].split('-')[0]))
+    print(len(resumes_data))
     if job_data.gender == 'Male':
         resumes_data = resumes_data.filter(gender='Male')
     elif job_data.gender == 'Female':
@@ -338,7 +344,6 @@ def check_basicRequirement(resumes_data, job_data):
 
     # resumes file path
     filepath = 'media/'
-
     resumes = [str(item.cv) for item in resumes_data]
     print("resumes: ", resumes)
     resumes_new = [item.split(':')[0] for item in resumes]
@@ -421,7 +426,6 @@ def check_basicRequirement(resumes_data, job_data):
             # print("This is EXE", file)
             pass
     print("Done Parsing.")
-
     return Resumes, Ordered_list_Resume
 
 
@@ -454,10 +458,14 @@ def show_rank(result_dict=None, jobfileName='job1', top_k=20):
 # start parsing
 # result
 def res(resumes_data, job_data):
-    print(resumes_data.values('cv'))
+    result_arr = dict()
+    print("Resumes: ", resumes_data.values('cv'))
 
     # checking basic requirements
     Resumes, Ordered_list_Resume = check_basicRequirement(resumes_data, job_data)
+
+    if not Ordered_list_Resume or not Resumes:
+        return result_arr
 
     # job-description
     Job_Desc = 0
@@ -470,6 +478,7 @@ def res(resumes_data, job_data):
         text = re.sub(' +', ' ', job_desc)
         tttt = str(text)
         tttt = normalize(word_tokenize(tttt))
+        print(tttt)
         text = [' '.join(tttt)]
     except:
         text = 'None'
@@ -503,7 +512,7 @@ def res(resumes_data, job_data):
             pass
 
     # ranking process
-    result_arr = dict()
+
     for indx, file in enumerate(Resume_Vector):
         samples = file
         name = Ordered_list_Resume[indx]

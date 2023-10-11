@@ -79,12 +79,20 @@ WSGI_APPLICATION = 'JobPortal.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'resume_ranker',
+    #     'USER': 'test',
+    #     'PASSWORD': '12345$Sp',
+    #     'HOST': 'localhost'
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'resume_ranker',
-        'USER': 'test',
-        'PASSWORD': '12345sp',
-        'HOST': 'localhost'
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
